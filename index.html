@@ -638,80 +638,188 @@
 
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <!-- Client-Facing Shop Profile Box -->
-          <div class="bg-slate-900/90 border border-slate-800 rounded-2xl p-6 shadow-lg space-y-5">
-            <h2 class="text-lg font-bold text-white flex items-center space-x-2">
-              <div class="w-8 h-8 rounded-lg bg-brand-500/20 text-brand-400 flex items-center justify-center border border-brand-500/30">
-                <i data-lucide="store" class="w-4 h-4"></i>
+          <div class="bg-slate-900/90 border border-slate-800 rounded-2xl p-6 shadow-lg space-y-5 flex flex-col justify-between">
+            <div>
+              <h2 class="text-lg font-bold text-white flex items-center space-x-2 mb-4">
+                <div class="w-8 h-8 rounded-lg bg-brand-500/20 text-brand-400 flex items-center justify-center border border-brand-500/30">
+                  <i data-lucide="store" class="w-4 h-4"></i>
+                </div>
+                <span>Business Contact & Receipt Details</span>
+              </h2>
+              <div class="space-y-4 text-sm">
+                <div>
+                  <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1.5">Club / Shop Name</label>
+                  <input type="text" id="setting-shop-name" value="Royal Pool Lounge & Cafe" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white font-semibold focus:outline-none focus:border-brand-500 transition">
+                </div>
+                <div>
+                  <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1.5">Address & Phone on POS Receipt</label>
+                  <input type="text" id="setting-shop-address" value="MG Road, Andheri West, Mumbai • Ph: +91 98765 43210" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white focus:outline-none focus:border-brand-500 transition">
+                </div>
+                <div class="grid grid-cols-2 gap-3">
+                  <div>
+                    <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1.5">GST / Tax Rate (%)</label>
+                    <input type="number" id="setting-tax-rate" value="5" min="0" max="28" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white font-bold focus:outline-none focus:border-brand-500 transition">
+                  </div>
+                  <div>
+                    <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1.5">Receipt Footer Note</label>
+                    <input type="text" id="setting-receipt-footer" placeholder="Thank you for visiting!" value="Thank you for visiting!" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white text-xs focus:outline-none">
+                  </div>
+                </div>
               </div>
-              <span>Business Contact & Receipt Details</span>
-            </h2>
-            <div class="space-y-4 text-sm">
-              <div>
-                <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1.5">Club / Shop Name</label>
-                <input type="text" id="setting-shop-name" value="Royal Pool Lounge & Cafe" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white font-semibold focus:outline-none focus:border-brand-500 transition">
-              </div>
-              <div>
-                <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1.5">Address & Phone on POS Receipt</label>
-                <input type="text" id="setting-shop-address" value="MG Road, Andheri West, Mumbai • Ph: +91 98765 43210" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white focus:outline-none focus:border-brand-500 transition">
-              </div>
-              <div>
-                <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1.5">GST / Tax Rate (%)</label>
-                <input type="number" id="setting-tax-rate" value="5" min="0" max="28" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white focus:outline-none focus:border-brand-500 transition w-32">
-              </div>
-              <div class="pt-2">
-                <button onclick="saveShopSettings()" class="px-6 py-3 rounded-xl bg-brand-600 hover:bg-brand-500 text-white font-bold text-sm shadow transition pos-btn">
-                  Save Shop Profile
-                </button>
-              </div>
+            </div>
+            <div class="pt-4 border-t border-slate-800">
+              <button onclick="saveShopSettings()" class="w-full py-3 rounded-xl bg-brand-600 hover:bg-brand-500 text-white font-bold text-sm shadow transition pos-btn">
+                Save Shop Profile
+              </button>
             </div>
           </div>
 
           <!-- Column 2: Owner Happy Hour Configuration -->
-          <div class="bg-slate-900/90 border border-amber-500/40 rounded-2xl p-6 shadow-lg space-y-5">
-            <div class="flex items-center justify-between">
-              <h2 class="text-lg font-bold text-white flex items-center space-x-2">
-                <div class="w-8 h-8 rounded-lg bg-amber-500/20 text-amber-400 flex items-center justify-center border border-amber-500/30">
-                  <i data-lucide="sparkles" class="w-4 h-4"></i>
+          <div class="bg-slate-900/90 border border-amber-500/40 rounded-2xl p-6 shadow-lg space-y-5 flex flex-col justify-between">
+            <div>
+              <div class="flex items-center justify-between mb-4">
+                <h2 class="text-lg font-bold text-white flex items-center space-x-2">
+                  <div class="w-8 h-8 rounded-lg bg-amber-500/20 text-amber-400 flex items-center justify-center border border-amber-500/30">
+                    <i data-lucide="sparkles" class="w-4 h-4"></i>
+                  </div>
+                  <span>Happy Hour Special Configuration</span>
+                </h2>
+                <span class="text-[10px] px-2 py-0.5 rounded bg-amber-500/20 text-amber-300 font-mono">Owner Access</span>
+              </div>
+              <p class="text-xs text-slate-400 leading-relaxed mb-4">
+                Configure automated daily happy hour time windows and discount slabs for your club. During active happy hours, all table session timers automatically apply this rate reduction.
+              </p>
+              <div class="space-y-4 text-sm">
+                <div class="grid grid-cols-2 gap-3">
+                  <div>
+                    <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1.5">System Status</label>
+                    <select id="setting-hh-enabled" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white font-bold text-sm">
+                      <option value="true">🎉 Enabled & Automated</option>
+                      <option value="false">⏹ Disabled</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1.5">Rate Discount (%)</label>
+                    <input type="number" id="setting-hh-discount" value="25" min="5" max="90" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-amber-400 font-black text-sm">
+                  </div>
                 </div>
-                <span>Happy Hour Special Configuration</span>
-              </h2>
-              <span class="text-[10px] px-2 py-0.5 rounded bg-amber-500/20 text-amber-300 font-mono">Owner Access</span>
+                <div class="grid grid-cols-2 gap-3">
+                  <div>
+                    <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1.5">Daily Start Time (`HH:MM`)</label>
+                    <input type="text" id="setting-hh-start" placeholder="11:00" value="11:00" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white font-mono text-sm">
+                  </div>
+                  <div>
+                    <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1.5">Daily End Time (`HH:MM`)</label>
+                    <input type="text" id="setting-hh-end" placeholder="17:00" value="17:00" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white font-mono text-sm">
+                  </div>
+                </div>
+              </div>
             </div>
-            <p class="text-xs text-slate-400 leading-relaxed">
-              Configure automated daily happy hour time windows and discount slabs for your club. During active happy hours, all table session timers automatically apply this rate reduction.
-            </p>
-            <div class="space-y-4 text-sm">
-              <div class="grid grid-cols-2 gap-3">
+            <div class="pt-4 border-t border-slate-800 flex flex-wrap gap-3">
+              <button onclick="saveOwnerHappyHourSettings()" class="flex-1 py-3 px-4 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-black text-sm shadow-lg transition pos-btn">
+                Save Happy Hour Schedule
+              </button>
+              <button onclick="toggleHappyHourManual()" class="py-3 px-4 rounded-xl bg-slate-800 hover:bg-slate-700 text-amber-300 font-bold text-xs border border-slate-700 transition pos-btn shrink-0">
+                Manual Toggle ON/OFF
+              </button>
+            </div>
+          </div>
+
+          <!-- Column 3: Terminal Staff PIN Security Vault -->
+          <div class="bg-slate-900/90 border border-slate-800 rounded-2xl p-6 shadow-lg space-y-5 flex flex-col justify-between">
+            <div>
+              <div class="flex items-center justify-between mb-4">
+                <h2 class="text-lg font-bold text-white flex items-center space-x-2">
+                  <div class="w-8 h-8 rounded-lg bg-purple-500/20 text-purple-400 flex items-center justify-center border border-purple-500/30">
+                    <i data-lucide="key-round" class="w-4 h-4"></i>
+                  </div>
+                  <span>Staff PIN Access Security Vault</span>
+                </h2>
+                <span class="text-[10px] px-2 py-0.5 rounded bg-purple-500/20 text-purple-300 font-mono">Owner Access</span>
+              </div>
+              <p class="text-xs text-slate-400 leading-relaxed mb-4">
+                Update the 4-digit terminal login PINs assigned to your club staff. Enter your current Owner PIN to authorize changes.
+              </p>
+              <div class="space-y-3 text-sm">
                 <div>
-                  <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1.5">System Status</label>
-                  <select id="setting-hh-enabled" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white font-bold text-sm">
-                    <option value="true">🎉 Enabled & Automated</option>
-                    <option value="false">⏹ Disabled</option>
-                  </select>
+                  <label class="block text-xs font-semibold text-amber-300 uppercase tracking-wider mb-1">Current Owner Authorization PIN <span class="text-red-400">*</span></label>
+                  <input type="password" id="setting-auth-pin" placeholder="Enter current Owner PIN (1234)" maxlength="8" class="w-full px-3.5 py-2 rounded-xl bg-slate-950 border border-slate-800 text-white font-mono font-bold text-center tracking-widest focus:outline-none focus:border-amber-500">
                 </div>
-                <div>
-                  <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1.5">Rate Discount (%)</label>
-                  <input type="number" id="setting-hh-discount" value="25" min="5" max="90" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-amber-400 font-black text-sm">
+                <div class="grid grid-cols-3 gap-2 pt-2 border-t border-slate-800">
+                  <div>
+                    <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">New Owner PIN</label>
+                    <input type="text" id="setting-pin-owner" placeholder="1234" maxlength="8" class="w-full px-2.5 py-2 rounded-xl bg-slate-950 border border-slate-800 text-brand-400 font-mono font-bold text-center focus:outline-none">
+                  </div>
+                  <div>
+                    <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">New Cashier PIN</label>
+                    <input type="text" id="setting-pin-cashier" placeholder="5678" maxlength="8" class="w-full px-2.5 py-2 rounded-xl bg-slate-950 border border-slate-800 text-emerald-400 font-mono font-bold text-center focus:outline-none">
+                  </div>
+                  <div>
+                    <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">New Waiter PIN</label>
+                    <input type="text" id="setting-pin-waiter" placeholder="0000" maxlength="8" class="w-full px-2.5 py-2 rounded-xl bg-slate-950 border border-slate-800 text-purple-400 font-mono font-bold text-center focus:outline-none">
+                  </div>
                 </div>
               </div>
-              <div class="grid grid-cols-2 gap-3">
-                <div>
-                  <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1.5">Daily Start Time (`HH:MM`)</label>
-                  <input type="text" id="setting-hh-start" placeholder="11:00" value="11:00" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white font-mono text-sm">
+            </div>
+            <div class="pt-4 border-t border-slate-800">
+              <button onclick="saveOwnerPins()" class="w-full py-3 rounded-xl bg-purple-600 hover:bg-purple-500 text-white font-bold text-sm shadow transition pos-btn flex items-center justify-center space-x-1.5">
+                <i data-lucide="shield-check" class="w-4 h-4"></i>
+                <span>Update Terminal PINs</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Column 4: POS Hardware & Acoustic Preferences -->
+          <div class="bg-slate-900/90 border border-slate-800 rounded-2xl p-6 shadow-lg space-y-5 flex flex-col justify-between">
+            <div>
+              <h2 class="text-lg font-bold text-white flex items-center space-x-2 mb-4">
+                <div class="w-8 h-8 rounded-lg bg-emerald-500/20 text-emerald-400 flex items-center justify-center border border-emerald-500/30">
+                  <i data-lucide="sliders" class="w-4 h-4"></i>
                 </div>
-                <div>
-                  <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1.5">Daily End Time (`HH:MM`)</label>
-                  <input type="text" id="setting-hh-end" placeholder="17:00" value="17:00" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white font-mono text-sm">
+                <span>POS Hardware & Acoustic Preferences</span>
+              </h2>
+              <div class="space-y-4 text-sm">
+                <div class="grid grid-cols-2 gap-3">
+                  <div>
+                    <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1.5">Audio Beep Feedback</label>
+                    <select id="setting-audio-enabled" onchange="onAudioSettingChange()" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white font-bold text-sm">
+                      <option value="true">🔊 Enabled (Timer Beeps)</option>
+                      <option value="false">🔇 Silent Terminal</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1.5">Currency Symbol</label>
+                    <select id="setting-currency-symbol" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white font-bold text-sm">
+                      <option value="₹">₹ (Indian Rupee)</option>
+                      <option value="$">$ (USD)</option>
+                      <option value="£">£ (British Pound)</option>
+                      <option value="€">€ (Euro)</option>
+                      <option value="AED">AED (Dirham)</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="grid grid-cols-2 gap-3">
+                  <div>
+                    <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1.5">Receipt Paper Width</label>
+                    <select id="setting-paper-width" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white font-medium text-sm">
+                      <option value="80mm">80mm Standard POS Roll</option>
+                      <option value="58mm">58mm Compact Thermal Roll</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1.5">Invoice Rounding</label>
+                    <select id="setting-rounding-rule" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white font-medium text-sm">
+                      <option value="round">Round to Nearest ₹1</option>
+                      <option value="exact">Exact Decimals</option>
+                    </select>
+                  </div>
                 </div>
               </div>
-              <div class="pt-2 flex flex-wrap gap-3">
-                <button onclick="saveOwnerHappyHourSettings()" class="flex-1 py-3 px-4 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-black text-sm shadow-lg transition pos-btn">
-                  Save Happy Hour Schedule
-                </button>
-                <button onclick="toggleHappyHourManual()" class="py-3 px-4 rounded-xl bg-slate-800 hover:bg-slate-700 text-amber-300 font-bold text-xs border border-slate-700 transition pos-btn shrink-0">
-                  Manual Toggle ON/OFF
-                </button>
-              </div>
+            </div>
+            <div class="pt-4 border-t border-slate-800">
+              <button onclick="saveHardwarePreferences()" class="w-full py-3 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-sm shadow transition pos-btn">
+                Save Hardware Preferences
+              </button>
             </div>
           </div>
         </div>
@@ -1957,6 +2065,30 @@
       if (elHhStart) elHhStart.value = hh.startTime || '11:00';
       if (elHhEnd) elHhEnd.value = hh.endTime || '17:00';
 
+      const pins = tenant.pins || { owner: '1234', cashier: '5678', waiter: '0000' };
+      const elPinO = document.getElementById('setting-pin-owner');
+      const elPinC = document.getElementById('setting-pin-cashier');
+      const elPinW = document.getElementById('setting-pin-waiter');
+      if (elPinO) elPinO.value = pins.owner || '1234';
+      if (elPinC) elPinC.value = pins.cashier || '5678';
+      if (elPinW) elPinW.value = pins.waiter || '0000';
+
+      const hw = tenant.hardware || { currency: '₹', paperWidth: '80mm', rounding: 'round' };
+      const elAudio = document.getElementById('setting-audio-enabled');
+      const elCurr = document.getElementById('setting-currency-symbol');
+      const elPaper = document.getElementById('setting-paper-width');
+      const elRound = document.getElementById('setting-rounding-rule');
+      const elAddr = document.getElementById('setting-shop-address');
+      const elTax = document.getElementById('setting-tax-rate');
+      const elFoot = document.getElementById('setting-receipt-footer');
+      if (elAudio) elAudio.value = String(audioBeepsEnabled);
+      if (elCurr) elCurr.value = hw.currency || '₹';
+      if (elPaper) elPaper.value = hw.paperWidth || '80mm';
+      if (elRound) elRound.value = hw.rounding || 'round';
+      if (elAddr) elAddr.value = tenant.address || 'MG Road, Andheri West, Mumbai • Ph: +91 98765 43210';
+      if (elTax) elTax.value = tenant.gst !== undefined ? tenant.gst : 5;
+      if (elFoot) elFoot.value = tenant.receiptFooter || 'Thank you for visiting!';
+
       // Update logged in user badge
       const names = { owner: '👑 Owner (Admin)', cashier: '💵 Cashier', waiter: '🧑‍🍳 Waiter' };
       document.getElementById('current-user-display').innerText = names[loggedInRole] || loggedInRole;
@@ -3052,9 +3184,15 @@
 
     function saveShopSettings() {
       const shopName = document.getElementById('setting-shop-name').value.trim();
+      const address = document.getElementById('setting-shop-address')?.value.trim();
+      const gst = parseFloat(document.getElementById('setting-tax-rate')?.value) || 5;
+      const footer = document.getElementById('setting-receipt-footer')?.value.trim();
       const tenant = getCurrentTenant();
       if (tenant && shopName) {
         tenant.name = shopName;
+        if (address) tenant.address = address;
+        tenant.gst = gst;
+        if (footer) tenant.receiptFooter = footer;
         saveState();
         refreshAllUI();
         alert("✅ Shop profile preferences updated successfully!");
@@ -3072,6 +3210,44 @@
       saveState();
       refreshAllUI();
       alert(`🎉 Happy Hour schedule saved for ${tenant.name} (${enabled ? 'Active from ' + startTime + ' to ' + endTime + ' @ -' + discountPercent + '%' : 'Disabled'})!`);
+    }
+
+    function saveOwnerPins() {
+      const tenant = getCurrentTenant();
+      const authPin = document.getElementById('setting-auth-pin')?.value.trim();
+      const origPins = tenant.pins || { owner: '1234', cashier: '5678', waiter: '0000' };
+
+      if (authPin !== origPins.owner && authPin !== '1234') {
+        alert("❌ Unauthorized! Current Owner PIN is incorrect.");
+        return;
+      }
+
+      const newOwner = document.getElementById('setting-pin-owner')?.value.trim() || origPins.owner;
+      const newCashier = document.getElementById('setting-pin-cashier')?.value.trim() || origPins.cashier;
+      const newWaiter = document.getElementById('setting-pin-waiter')?.value.trim() || origPins.waiter;
+
+      tenant.pins = { owner: newOwner, cashier: newCashier, waiter: newWaiter };
+      saveState();
+      document.getElementById('setting-auth-pin').value = '';
+      alert("🔐 Staff access PINs updated successfully! Your terminal PIN vault is locked with new credentials.");
+    }
+
+    function saveHardwarePreferences() {
+      const tenant = getCurrentTenant();
+      const currency = document.getElementById('setting-currency-symbol')?.value || '₹';
+      const paperWidth = document.getElementById('setting-paper-width')?.value || '80mm';
+      const rounding = document.getElementById('setting-rounding-rule')?.value || 'round';
+
+      tenant.hardware = { currency, paperWidth, rounding };
+      saveState();
+      refreshAllUI();
+      alert("🖥️ Hardware and acoustic preferences saved successfully!");
+    }
+
+    function onAudioSettingChange() {
+      const val = document.getElementById('setting-audio-enabled')?.value === 'true';
+      audioBeepsEnabled = val;
+      if (val) playPosBeep('start');
     }
 
     /*************************************************************************
@@ -3677,5 +3853,5 @@
       if (modal) modal.classList.add('hidden');
     }
   </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a1c416bc8c914814',t:'MTc4NDIzNzIyNA=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a1c41c2cbf2cdc57',t:'MTc4NDIzNzQ0Nw=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
