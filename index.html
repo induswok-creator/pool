@@ -1213,6 +1213,76 @@
     </div>
   </div>
 
+  <!-- 3.8. IN-APP MENU ITEM & TABLE RATE EDITOR MODAL (NO CHROME DIALOGS) -->
+  <div id="modal-menu-editor" class="fixed inset-0 z-50 bg-slate-950/90 backdrop-blur-md hidden flex items-center justify-center p-3 sm:p-4">
+    <div class="bg-slate-900 border border-brand-500/50 rounded-3xl max-w-md w-full p-6 shadow-2xl space-y-4">
+      <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+        <div class="flex items-center space-x-3">
+          <div class="w-10 h-10 rounded-xl bg-brand-500/20 text-brand-400 flex items-center justify-center font-bold text-lg border border-brand-500/30">
+            📋
+          </div>
+          <div>
+            <h3 id="menu-editor-title" class="text-base font-black text-white">Add Menu Item or Rate</h3>
+            <p id="menu-editor-subtitle" class="text-[11px] text-brand-300">Create new cafe item or table session rate.</p>
+          </div>
+        </div>
+        <button onclick="closeModal('modal-menu-editor')" class="p-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white transition">
+          <i data-lucide="x" class="w-4 h-4"></i>
+        </button>
+      </div>
+
+      <form onsubmit="saveMenuEditorForm(event)" class="space-y-3.5 text-xs">
+        <input type="hidden" id="menu-editor-orig-id" value="">
+        <input type="hidden" id="menu-editor-orig-type" value="item">
+        <input type="hidden" id="menu-editor-mode" value="create">
+
+        <div id="menu-editor-type-row">
+          <label class="block font-bold text-slate-300 uppercase tracking-wider mb-1.5">Select Entry Type <span class="text-red-400">*</span></label>
+          <div class="grid grid-cols-2 gap-2">
+            <button type="button" onclick="selectMenuEditorType('rate')" id="btn-editor-type-rate" class="p-2.5 rounded-xl bg-slate-950 border border-slate-800 text-slate-400 font-bold text-xs flex items-center justify-center space-x-1.5 transition">
+              <i data-lucide="clock" class="w-4 h-4 text-brand-400"></i>
+              <span>Table Hourly Rate</span>
+            </button>
+            <button type="button" onclick="selectMenuEditorType('item')" id="btn-editor-type-item" class="p-2.5 rounded-xl bg-brand-600 border border-brand-500 text-white font-bold text-xs flex items-center justify-center space-x-1.5 transition">
+              <i data-lucide="coffee" class="w-4 h-4 text-emerald-400"></i>
+              <span>Cafe Menu Item</span>
+            </button>
+          </div>
+        </div>
+
+        <div>
+          <label id="menu-editor-name-label" class="block font-bold text-slate-300 uppercase tracking-wider mb-1">Item Description / Table Rate Name <span class="text-red-400">*</span></label>
+          <input type="text" id="menu-editor-name" required placeholder="e.g. VIP Championship Snooker OR Cold Coffee" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white font-semibold text-sm focus:outline-none focus:border-brand-500 transition">
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label id="menu-editor-price-label" class="block font-bold text-slate-300 uppercase tracking-wider mb-1">Price / Rate (₹) <span class="text-red-400">*</span></label>
+            <input type="number" id="menu-editor-price" required min="0" step="any" placeholder="200" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-brand-400 font-black text-sm focus:outline-none focus:border-brand-500 transition">
+          </div>
+          <div id="menu-editor-cat-row">
+            <label class="block font-bold text-slate-300 uppercase tracking-wider mb-1">Menu Category</label>
+            <select id="menu-editor-cat" class="w-full px-3 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white font-bold text-xs">
+              <option value="Drinks">Drinks & Beverages</option>
+              <option value="Snacks">Quick Snacks</option>
+              <option value="Hookah">Hookah / Sheesha</option>
+              <option value="Accessories">Cues & Accessories</option>
+              <option value="Combos">Combo Packages</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="flex space-x-3 pt-3 border-t border-slate-800">
+          <button type="button" onclick="closeModal('modal-menu-editor')" class="flex-1 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-semibold text-xs pos-btn">Cancel</button>
+          <button type="submit" id="menu-editor-btn-save" class="flex-1 py-2.5 rounded-xl bg-brand-600 hover:bg-brand-500 text-white font-bold text-xs shadow-lg transition pos-btn flex items-center justify-center space-x-1.5">
+            <i data-lucide="check" class="w-4 h-4"></i>
+            <span>Save Entry</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
   <!-- 4. CLIENT-SAFE SUBSCRIPTION PLAN VIEW MODAL (NO DEV SECRETS EXPOSED) -->
   <div id="modal-client-plan" class="fixed inset-0 z-50 bg-slate-950/85 backdrop-blur-md hidden flex items-center justify-center p-3 sm:p-4">
     <div class="bg-slate-900 border border-slate-800 rounded-3xl max-w-3xl w-full p-6 shadow-2xl max-h-[90vh] overflow-y-auto">
@@ -3218,7 +3288,7 @@
     }
 
     /*************************************************************************
-     * 8. MENU & RATES
+     * 8. MENU & RATES (IN-APP EDITOR, NO CHROME DIALOGS)
      *************************************************************************/
     function renderMenuAndRates() {
       const ratesContainer = document.getElementById('rates-list');
@@ -3228,8 +3298,14 @@
           const div = document.createElement('div');
           div.className = "p-3.5 rounded-xl bg-slate-950 border border-slate-800 flex items-center justify-between text-xs";
           div.innerHTML = `
-            <span class="font-bold text-white">${r.name}</span>
-            <span class="font-black text-brand-400">₹${r.rate} / hr</span>
+            <div>
+              <span class="font-bold text-white">${r.name}</span>
+              <span class="font-black text-brand-400 block sm:inline sm:ml-2">₹${r.rate} / hr</span>
+            </div>
+            <div class="flex items-center space-x-1.5 shrink-0">
+              <button onclick="openEditMenuOrRate('rate', '${r.id}')" class="px-2.5 py-1 rounded bg-slate-800 hover:bg-slate-700 text-slate-300 font-semibold text-[11px] transition">✏️ Edit</button>
+              <button onclick="deleteMenuOrRate('rate', '${r.id}')" class="px-2 py-1 rounded bg-red-600/20 hover:bg-red-600 text-red-400 hover:text-white font-bold text-[11px] transition">🗑️ Delete</button>
+            </div>
           `;
           ratesContainer.appendChild(div);
         });
@@ -3245,8 +3321,12 @@
             <div>
               <span class="font-bold text-white">${m.name}</span>
               <span class="text-[10px] text-slate-400 font-medium ml-1.5">(${m.category})</span>
+              <span class="font-black text-emerald-400 block sm:inline sm:ml-2">₹${m.price}</span>
             </div>
-            <span class="font-black text-emerald-400">₹${m.price}</span>
+            <div class="flex items-center space-x-1.5 shrink-0">
+              <button onclick="openEditMenuOrRate('item', '${m.id}')" class="px-2.5 py-1 rounded bg-slate-800 hover:bg-slate-700 text-slate-300 font-semibold text-[11px] transition">✏️ Edit</button>
+              <button onclick="deleteMenuOrRate('item', '${m.id}')" class="px-2 py-1 rounded bg-red-600/20 hover:bg-red-600 text-red-400 hover:text-white font-bold text-[11px] transition">🗑️ Delete</button>
+            </div>
           `;
           menuContainer.appendChild(div);
         });
@@ -3254,19 +3334,130 @@
     }
 
     function openAddItemModal() {
-      const name = prompt("Enter menu item or table rate description (e.g., Cold Coffee / Snooker Table):");
-      if (!name) return;
-      const price = parseFloat(prompt("Enter price / rate in ₹:"));
-      if (!price || isNaN(price)) return;
-      const isRate = confirm("Is this an Hourly Table Session Rate? (Click OK for Hourly Rate, Cancel for Cafe Menu Item)");
-      
-      if (isRate) {
-        appState.hourlyRates.push({ id: `rate_${Date.now()}`, name, rate: price });
+      document.getElementById('menu-editor-orig-id').value = '';
+      document.getElementById('menu-editor-mode').value = 'create';
+      document.getElementById('menu-editor-title').innerText = 'Add Menu Item or Rate';
+      document.getElementById('menu-editor-subtitle').innerText = 'Create new cafe item or table session rate.';
+      document.getElementById('menu-editor-name').value = '';
+      document.getElementById('menu-editor-price').value = '';
+      selectMenuEditorType('rate');
+      document.getElementById('menu-editor-type-row').style.display = 'block';
+
+      document.getElementById('modal-menu-editor').classList.remove('hidden');
+      if (window.lucide) lucide.createIcons();
+    }
+
+    function openEditMenuOrRate(type, id) {
+      document.getElementById('menu-editor-orig-id').value = id;
+      document.getElementById('menu-editor-orig-type').value = type;
+      document.getElementById('menu-editor-mode').value = 'edit';
+      document.getElementById('menu-editor-type-row').style.display = 'none';
+
+      if (type === 'rate') {
+        const rateObj = appState.hourlyRates.find(r => r.id === id);
+        if (!rateObj) return;
+        document.getElementById('menu-editor-title').innerText = `Edit Table Rate: ${rateObj.name}`;
+        document.getElementById('menu-editor-subtitle').innerText = 'Modify session description or hourly rate.';
+        document.getElementById('menu-editor-name').value = rateObj.name;
+        document.getElementById('menu-editor-price').value = rateObj.rate;
+        selectMenuEditorType('rate');
       } else {
-        appState.menuItems.push({ id: `item_${Date.now()}`, name, price, category: 'Snacks' });
+        const itemObj = appState.menuItems.find(i => i.id === id);
+        if (!itemObj) return;
+        document.getElementById('menu-editor-title').innerText = `Edit Cafe Item: ${itemObj.name}`;
+        document.getElementById('menu-editor-subtitle').innerText = 'Modify item description, price, or category.';
+        document.getElementById('menu-editor-name').value = itemObj.name;
+        document.getElementById('menu-editor-price').value = itemObj.price;
+        document.getElementById('menu-editor-cat').value = itemObj.category || 'Snacks';
+        selectMenuEditorType('item');
       }
+
+      document.getElementById('modal-menu-editor').classList.remove('hidden');
+      if (window.lucide) lucide.createIcons();
+    }
+
+    function selectMenuEditorType(type) {
+      document.getElementById('menu-editor-orig-type').value = type;
+      const btnRate = document.getElementById('btn-editor-type-rate');
+      const btnItem = document.getElementById('btn-editor-type-item');
+      const catRow = document.getElementById('menu-editor-cat-row');
+      const nameLabel = document.getElementById('menu-editor-name-label');
+      const priceLabel = document.getElementById('menu-editor-price-label');
+
+      if (type === 'rate') {
+        if (btnRate) btnRate.className = "p-2.5 rounded-xl bg-brand-600 border border-brand-500 text-white font-bold text-xs flex items-center justify-center space-x-1.5 transition";
+        if (btnItem) btnItem.className = "p-2.5 rounded-xl bg-slate-950 border border-slate-800 text-slate-400 font-bold text-xs flex items-center justify-center space-x-1.5 transition";
+        if (catRow) catRow.style.display = 'none';
+        if (nameLabel) nameLabel.innerHTML = 'Table Hourly Rate Name <span class="text-red-400">*</span>';
+        if (priceLabel) priceLabel.innerHTML = 'Hourly Rate (₹/hr) <span class="text-red-400">*</span>';
+      } else {
+        if (btnRate) btnRate.className = "p-2.5 rounded-xl bg-slate-950 border border-slate-800 text-slate-400 font-bold text-xs flex items-center justify-center space-x-1.5 transition";
+        if (btnItem) btnItem.className = "p-2.5 rounded-xl bg-emerald-600 border border-emerald-500 text-white font-bold text-xs flex items-center justify-center space-x-1.5 transition";
+        if (catRow) catRow.style.display = 'block';
+        if (nameLabel) nameLabel.innerHTML = 'Cafe Menu Item Description <span class="text-red-400">*</span>';
+        if (priceLabel) priceLabel.innerHTML = 'Unit Price (₹) <span class="text-red-400">*</span>';
+      }
+    }
+
+    function saveMenuEditorForm(event) {
+      event.preventDefault();
+      const mode = document.getElementById('menu-editor-mode').value;
+      const origId = document.getElementById('menu-editor-orig-id').value;
+      const type = document.getElementById('menu-editor-orig-type').value;
+      const name = document.getElementById('menu-editor-name').value.trim();
+      const price = parseFloat(document.getElementById('menu-editor-price').value) || 0;
+      const cat = document.getElementById('menu-editor-cat')?.value || 'Snacks';
+
+      if (!name) return;
+
+      if (mode === 'create') {
+        if (type === 'rate') {
+          appState.hourlyRates.push({ id: `rate_${Date.now()}`, name, rate: price });
+        } else {
+          appState.menuItems.push({ id: `item_${Date.now()}`, name, price, category: cat });
+        }
+        alert(`✅ Added new ${type === 'rate' ? 'Table Rate' : 'Menu Item'}: "${name}" (@ ₹${price})!`);
+      } else {
+        if (type === 'rate') {
+          const rateObj = appState.hourlyRates.find(r => r.id === origId);
+          if (rateObj) {
+            rateObj.name = name;
+            rateObj.rate = price;
+          }
+        } else {
+          const itemObj = appState.menuItems.find(i => i.id === origId);
+          if (itemObj) {
+            itemObj.name = name;
+            itemObj.price = price;
+            itemObj.category = cat;
+          }
+        }
+        alert(`✅ Updated entry: "${name}" (@ ₹${price})!`);
+      }
+
       saveState();
+      closeModal('modal-menu-editor');
       renderMenuAndRates();
+      renderTableGrid();
+    }
+
+    function deleteMenuOrRate(type, id) {
+      if (type === 'rate') {
+        const rateObj = appState.hourlyRates.find(r => r.id === id);
+        if (rateObj && confirm(`Delete table rate "${rateObj.name}"?`)) {
+          appState.hourlyRates = appState.hourlyRates.filter(r => r.id !== id);
+          saveState();
+          renderMenuAndRates();
+          renderTableGrid();
+        }
+      } else {
+        const itemObj = appState.menuItems.find(i => i.id === id);
+        if (itemObj && confirm(`Delete cafe item "${itemObj.name}"?`)) {
+          appState.menuItems = appState.menuItems.filter(i => i.id !== id);
+          saveState();
+          renderMenuAndRates();
+        }
+      }
     }
 
     function addNewTableModal() {
@@ -4072,5 +4263,5 @@
       if (modal) modal.classList.add('hidden');
     }
   </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a1c42c65b9c03f7f',t:'MTc4NDIzODExMQ=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a1c43a3a6a6a99af',t:'MTc4NDIzODY3OA=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
