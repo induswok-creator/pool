@@ -1241,7 +1241,11 @@
               <li class="flex items-center space-x-2 text-slate-500"><i data-lucide="x" class="w-3.5 h-3.5 text-slate-600 shrink-0"></i><span>No Credit Udhar Khata</span></li>
             </ul>
           </div>
-          <div class="mt-4 pt-3 border-t border-slate-800 text-[11px] text-slate-400 font-semibold text-center">Standard POS</div>
+          <div class="mt-4 pt-3 border-t border-slate-800">
+            <button id="plan-btn-149" onclick="openUpgradeCheckoutModal('149')" class="w-full py-2.5 rounded-xl font-bold text-xs transition pos-btn bg-slate-800 text-slate-400">
+              Switch to Basic ₹149
+            </button>
+          </div>
         </div>
 
         <!-- Pro ₹249 -->
@@ -1258,7 +1262,11 @@
               <li class="flex items-center space-x-2"><i data-lucide="check" class="w-3.5 h-3.5 text-brand-400 font-bold shrink-0"></i><span>Save Credit Bills (Udhar)</span></li>
             </ul>
           </div>
-          <div class="mt-4 pt-3 border-t border-slate-800 text-[11px] text-brand-400 font-semibold text-center">Multi-User Credit</div>
+          <div class="mt-4 pt-3 border-t border-slate-800">
+            <button id="plan-btn-249" onclick="openUpgradeCheckoutModal('249')" class="w-full py-2.5 rounded-xl font-bold text-xs transition shadow pos-btn bg-brand-600 hover:bg-brand-500 text-white">
+              🚀 Upgrade Now (₹249/mo)
+            </button>
+          </div>
         </div>
 
         <!-- Ultimate ₹349 -->
@@ -1275,12 +1283,106 @@
               <li class="flex items-center space-x-2"><i data-lucide="check" class="w-3.5 h-3.5 text-emerald-400 font-bold shrink-0"></i><span>1-Click WhatsApp Reminders</span></li>
             </ul>
           </div>
-          <div class="mt-4 pt-3 border-t border-slate-800 text-[11px] text-amber-400 font-black text-center">Current Active Tier</div>
+          <div class="mt-4 pt-3 border-t border-slate-800">
+            <button id="plan-btn-349" onclick="openUpgradeCheckoutModal('349')" class="w-full py-2.5 rounded-xl font-black text-xs transition shadow-lg pos-btn bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950">
+              ⚡ Upgrade Now (₹349/mo)
+            </button>
+          </div>
         </div>
       </div>
 
       <div class="mt-6 p-4 rounded-2xl bg-slate-950 border border-slate-800 text-center text-xs text-slate-400">
-        To upgrade or modify your shop subscription plan, please contact your **CueClub POS Authorized Provider** or customer support line.
+        All online upgrades activate instantly across all your club terminals via UPI or Credit/Debit Card checkout.
+      </div>
+    </div>
+  </div>
+
+  <!-- 4.5. SELF-SERVICE UPGRADE CHECKOUT & PAYMENT GATEWAY SIMULATION MODAL -->
+  <div id="modal-plan-checkout" class="fixed inset-0 z-50 bg-slate-950/90 backdrop-blur-md hidden flex items-center justify-center p-3 sm:p-4">
+    <div class="bg-slate-900 border border-emerald-500/50 rounded-3xl max-w-md w-full p-6 shadow-2xl space-y-4 max-h-[92vh] overflow-y-auto">
+      <div class="flex items-center space-x-3 border-b border-slate-800 pb-3">
+        <div class="w-11 h-11 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center font-bold text-xl border border-emerald-500/30">
+          💳
+        </div>
+        <div>
+          <h3 id="checkout-plan-title" class="text-lg font-black text-white">Upgrade to Pro Tier (₹249)</h3>
+          <p class="text-xs text-emerald-300">Instant automated tier activation & Cloud multi-sync unlocking.</p>
+        </div>
+      </div>
+
+      <div class="space-y-3 text-xs">
+        <div class="p-3.5 rounded-2xl bg-slate-950 border border-slate-800 space-y-2">
+          <div class="flex justify-between font-bold text-slate-300">
+            <span>Selected Subscription:</span>
+            <span id="checkout-plan-name" class="text-white font-black">Pro Tier (₹249/mo)</span>
+          </div>
+          <div class="flex justify-between text-slate-400">
+            <span>Billing Cycle:</span>
+            <select id="checkout-billing-cycle" onchange="updateCheckoutTotals()" class="bg-slate-900 border border-slate-700 rounded-lg px-2 py-1 text-white font-bold">
+              <option value="monthly">Monthly Cycle (Billed Monthly)</option>
+              <option value="annual">Annual Cycle (20% Off — Billed Annually)</option>
+            </select>
+          </div>
+          <div class="border-t border-slate-800 pt-2 space-y-1">
+            <div class="flex justify-between text-slate-400"><span>Base Price:</span><span id="checkout-base-amt" class="text-white">₹249</span></div>
+            <div class="flex justify-between text-slate-400"><span>SaaS Tax (GST 18%):</span><span id="checkout-gst-amt" class="text-white">₹45</span></div>
+            <div class="flex justify-between font-black text-emerald-400 text-sm pt-1 border-t border-slate-800"><span>Total Payable:</span><span id="checkout-total-amt">₹294</span></div>
+          </div>
+        </div>
+
+        <div>
+          <label class="block font-bold text-slate-300 uppercase tracking-wider mb-2">Select Payment Gateway / Method</label>
+          <div class="grid grid-cols-2 gap-2">
+            <button type="button" onclick="selectCheckoutMethod('upi')" id="checkout-method-upi" class="checkout-method-btn p-2.5 rounded-xl bg-brand-600 border border-brand-500 text-white font-bold text-xs flex items-center justify-center space-x-1.5">
+              <i data-lucide="qr-code" class="w-4 h-4"></i>
+              <span>UPI / QR Scan</span>
+            </button>
+            <button type="button" onclick="selectCheckoutMethod('card')" id="checkout-method-card" class="checkout-method-btn p-2.5 rounded-xl bg-slate-950 border border-slate-800 text-slate-400 font-bold text-xs flex items-center justify-center space-x-1.5">
+              <i data-lucide="credit-card" class="w-4 h-4"></i>
+              <span>Credit / Debit Card</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- UPI Section -->
+        <div id="checkout-sec-upi" class="p-4 rounded-2xl bg-slate-950 border border-slate-800 text-center space-y-3">
+          <div class="text-[11px] font-semibold text-slate-300">Scan QR Code using GPay, PhonePe, Paytm, or BHIM</div>
+          <div class="w-36 h-36 mx-auto bg-white p-2 rounded-xl border border-slate-700 flex items-center justify-center relative shadow-inner">
+            <div class="w-full h-full bg-slate-900 rounded-lg flex flex-col items-center justify-center text-emerald-400 font-mono text-[10px]">
+              <i data-lucide="qr-code" class="w-16 h-16 text-slate-800 mb-1"></i>
+              <span>CUECLUB-PAY-QR</span>
+            </div>
+          </div>
+          <div class="text-[10px] text-slate-500 font-mono">UPI ID: pay.cueclub@icici</div>
+        </div>
+
+        <!-- Card Section -->
+        <div id="checkout-sec-card" class="hidden p-4 rounded-2xl bg-slate-950 border border-slate-800 space-y-2.5">
+          <div>
+            <label class="block text-[10px] font-bold text-slate-400 uppercase mb-1">Card Number</label>
+            <input type="text" placeholder="4532 •••• •••• ••••" maxlength="19" class="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-white font-mono text-xs">
+          </div>
+          <div class="grid grid-cols-2 gap-2">
+            <div>
+              <label class="block text-[10px] font-bold text-slate-400 uppercase mb-1">Expiry Date</label>
+              <input type="text" placeholder="MM/YY" maxlength="5" class="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-white font-mono text-xs text-center">
+            </div>
+            <div>
+              <label class="block text-[10px] font-bold text-slate-400 uppercase mb-1">CVV Security</label>
+              <input type="password" placeholder="•••" maxlength="4" class="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-white font-mono text-xs text-center">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="flex space-x-3 pt-2 border-t border-slate-800">
+        <button onclick="closeModal('modal-plan-checkout')" class="flex-1 py-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-semibold text-xs pos-btn">
+          Cancel
+        </button>
+        <button onclick="simulatePaymentSuccess()" class="flex-1 py-3 rounded-xl bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-400 hover:to-emerald-500 text-slate-950 font-black text-xs shadow-lg transition pos-btn flex items-center justify-center space-x-1.5">
+          <i data-lucide="shield-check" class="w-4 h-4"></i>
+          <span id="checkout-btn-pay">Pay & Activate Plan</span>
+        </button>
       </div>
     </div>
   </div>
@@ -1842,9 +1944,9 @@
       renderShopSelectorInLogin();
       selectLoginRole('owner');
       
-      // Check session
-      const savedLogin = sessionStorage.getItem('CUECLUB_LOGGED_IN');
-      if (savedLogin) {
+      // Auto-launch demo session unless explicitly logged out
+      const loggedOut = sessionStorage.getItem('CUECLUB_LOGGED_OUT');
+      if (!loggedOut) {
         isLoggedIn = true;
         loggedInRole = sessionStorage.getItem('CUECLUB_LOGGED_ROLE') || 'owner';
         showMainApp();
@@ -1986,6 +2088,7 @@
       if (pinInput === pins[selectedLoginRole] || pinInput === '1234') {
         isLoggedIn = true;
         loggedInRole = selectedLoginRole;
+        sessionStorage.removeItem('CUECLUB_LOGGED_OUT');
         sessionStorage.setItem('CUECLUB_LOGGED_IN', 'true');
         sessionStorage.setItem('CUECLUB_LOGGED_ROLE', selectedLoginRole);
         showMainApp();
@@ -1997,6 +2100,7 @@
     function clientLogout() {
       isLoggedIn = false;
       isDevAuthenticated = false;
+      sessionStorage.setItem('CUECLUB_LOGGED_OUT', 'true');
       sessionStorage.removeItem('CUECLUB_LOGGED_IN');
       sessionStorage.removeItem('CUECLUB_LOGGED_ROLE');
       showLoginScreen();
@@ -3771,9 +3875,124 @@
       alert(`🗑️ Shop "${tenant.name}" has been permanently purged.`);
     }
 
+    let isManualHappyHour = false;
+    let currentTheme = 'dark';
+
+    function toggleHappyHourManual() {
+      isManualHappyHour = !isManualHappyHour;
+      const dot = document.getElementById('happy-hour-dot');
+      const text = document.getElementById('happy-hour-text');
+      const pill = document.getElementById('happy-hour-pill');
+
+      if (isManualHappyHour) {
+        if (dot) dot.className = "w-2 h-2 rounded-full bg-amber-400 animate-ping";
+        if (text) text.innerText = "🎉 Happy Hour: Active (-25%)";
+        if (pill) pill.className = "px-2.5 py-1.5 rounded-lg bg-amber-500/20 hover:bg-amber-500/30 border border-amber-500/40 text-amber-300 font-bold text-xs flex items-center space-x-1.5 transition select-none shrink-0";
+        alert("🎉 Happy Hour Mode Activated (-25% Off all new Table Session rates)!");
+      } else {
+        if (dot) dot.className = "w-2 h-2 rounded-full bg-slate-500";
+        if (text) text.innerText = "🎉 Happy Hour: Off";
+        if (pill) pill.className = "px-2.5 py-1.5 rounded-lg bg-slate-800/80 hover:bg-slate-700 border border-slate-700 text-slate-400 font-bold text-xs flex items-center space-x-1.5 transition select-none shrink-0";
+        alert("⏹ Happy Hour Mode Deactivated. Standard club table rates restored.");
+      }
+      renderTableGrid();
+    }
+
+    function togglePosTheme() {
+      const html = document.documentElement;
+      const icon = document.getElementById('theme-icon');
+      if (currentTheme === 'dark') {
+        currentTheme = 'light';
+        html.classList.remove('dark');
+        html.className = "bg-slate-100 text-slate-900 min-h-screen flex flex-col font-sans selection:bg-brand-600 selection:text-white antialiased";
+        if (icon) icon.setAttribute('data-lucide', 'sun');
+      } else {
+        currentTheme = 'dark';
+        html.classList.add('dark');
+        html.className = "dark bg-slate-950 text-slate-100 min-h-screen flex flex-col font-sans selection:bg-brand-600 selection:text-white antialiased";
+        if (icon) icon.setAttribute('data-lucide', 'moon');
+      }
+      if (window.lucide) lucide.createIcons();
+    }
+
     function openClientPlanModal() {
+      const tenant = getCurrentTenant();
+      ['149', '249', '349'].forEach(p => {
+        const btn = document.getElementById(`plan-btn-${p}`);
+        if (!btn) return;
+        if (tenant.plan === p) {
+          btn.className = "w-full py-2.5 rounded-xl font-bold text-xs pos-btn bg-slate-800 text-emerald-400 cursor-not-allowed border border-emerald-500/30";
+          btn.innerText = "🟢 Current Active Plan";
+          btn.disabled = true;
+        } else if (parseInt(p) > parseInt(tenant.plan || 149)) {
+          btn.className = "w-full py-2.5 rounded-xl font-bold text-xs transition shadow pos-btn bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-400 hover:to-emerald-500 text-slate-950 font-black animate-pulse";
+          btn.innerText = `🚀 Upgrade Now (₹${p}/mo)`;
+          btn.disabled = false;
+        } else {
+          btn.className = "w-full py-2.5 rounded-xl font-bold text-xs transition pos-btn bg-slate-800 hover:bg-slate-700 text-slate-300";
+          btn.innerText = `Switch to ₹${p}/mo`;
+          btn.disabled = false;
+        }
+      });
       document.getElementById('modal-client-plan').classList.remove('hidden');
       if (window.lucide) lucide.createIcons();
+    }
+
+    let checkoutTargetPlan = '349';
+    let activeCheckoutMethod = 'upi';
+
+    function openUpgradeCheckoutModal(targetPlan) {
+      const tenant = getCurrentTenant();
+      const names = { '149': 'Basic Tier (₹149/mo)', '249': 'Pro Tier (₹249/mo)', '349': 'Ultimate Tier (₹349/mo)' };
+      const planName = names[targetPlan] || `Tier ₹${targetPlan}/mo`;
+      const msg = `Hello! I want to upgrade my CueClub POS subscription plan to ${planName} for my shop "${tenant.name}" (Shop ID: ${tenant.id}). Please guide me with the payment and activation process.`;
+      const waUrl = `https://wa.me/918369940174?text=${encodeURIComponent(msg)}`;
+      window.open(waUrl, '_blank');
+    }
+
+    function selectCheckoutMethod(method) {
+      activeCheckoutMethod = method;
+      document.querySelectorAll('.checkout-method-btn').forEach(b => {
+        b.className = "checkout-method-btn p-2.5 rounded-xl bg-slate-950 border border-slate-800 text-slate-400 font-bold text-xs flex items-center justify-center space-x-1.5";
+      });
+      const activeBtn = document.getElementById(`checkout-method-${method}`);
+      if (activeBtn) {
+        activeBtn.className = "checkout-method-btn p-2.5 rounded-xl bg-brand-600 border border-brand-500 text-white font-bold text-xs flex items-center justify-center space-x-1.5";
+      }
+
+      const upiSec = document.getElementById('checkout-sec-upi');
+      const cardSec = document.getElementById('checkout-sec-card');
+      if (method === 'upi') {
+        if (upiSec) upiSec.classList.remove('hidden');
+        if (cardSec) cardSec.classList.add('hidden');
+      } else {
+        if (upiSec) upiSec.classList.add('hidden');
+        if (cardSec) cardSec.classList.remove('hidden');
+      }
+    }
+
+    function updateCheckoutTotals() {
+      const cycle = document.getElementById('checkout-billing-cycle')?.value || 'monthly';
+      const baseMonthly = parseInt(checkoutTargetPlan) || 349;
+      let baseAmt = baseMonthly;
+      if (cycle === 'annual') {
+        baseAmt = Math.round(baseMonthly * 12 * 0.8); // 20% discount on annual
+      }
+      const gstAmt = Math.round(baseAmt * 0.18); // 18% SaaS GST
+      const totalAmt = baseAmt + gstAmt;
+
+      document.getElementById('checkout-base-amt').innerText = `₹${baseAmt.toLocaleString()}`;
+      document.getElementById('checkout-gst-amt').innerText = `₹${gstAmt.toLocaleString()}`;
+      document.getElementById('checkout-total-amt').innerText = `₹${totalAmt.toLocaleString()}`;
+      document.getElementById('checkout-btn-pay').innerText = `Pay ₹${totalAmt.toLocaleString()} & Activate Plan`;
+    }
+
+    function simulatePaymentSuccess() {
+      const tenant = getCurrentTenant();
+      const msg = `Hello! I have initiated payment to upgrade my CueClub POS subscription plan to Tier ₹${checkoutTargetPlan}/mo for my shop "${tenant.name}" (Shop ID: ${tenant.id}). Please verify and activate my terminal profile right away.`;
+      const waUrl = `https://wa.me/918369940174?text=${encodeURIComponent(msg)}`;
+      window.open(waUrl, '_blank');
+      closeModal('modal-plan-checkout');
     }
 
     /*************************************************************************
@@ -3853,5 +4072,5 @@
       if (modal) modal.classList.add('hidden');
     }
   </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a1c41c2cbf2cdc57',t:'MTc4NDIzNzQ0Nw=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a1c42c65b9c03f7f',t:'MTc4NDIzODExMQ=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
