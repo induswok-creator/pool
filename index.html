@@ -631,36 +631,87 @@
       <section id="tab-settings" class="hidden space-y-6">
         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
-            <h1 class="text-2xl font-black text-white">Shop Profile & Receipt Preferences</h1>
-            <p class="text-sm text-slate-400">Customize your club address, contact details, and GST calculation preferences.</p>
+            <h1 class="text-2xl font-black text-white">Shop Profile, Receipt & Happy Hour Settings</h1>
+            <p class="text-sm text-slate-400">Customize your club contact details, GST rates, and automated happy hour schedules.</p>
           </div>
         </div>
 
-        <!-- Client-Facing Shop Profile Box (No secret dev/Firebase settings exposed here!) -->
-        <div class="max-w-2xl bg-slate-900/90 border border-slate-800 rounded-2xl p-6 shadow-lg space-y-5">
-          <h2 class="text-lg font-bold text-white flex items-center space-x-2">
-            <div class="w-8 h-8 rounded-lg bg-brand-500/20 text-brand-400 flex items-center justify-center border border-brand-500/30">
-              <i data-lucide="store" class="w-4 h-4"></i>
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <!-- Client-Facing Shop Profile Box -->
+          <div class="bg-slate-900/90 border border-slate-800 rounded-2xl p-6 shadow-lg space-y-5">
+            <h2 class="text-lg font-bold text-white flex items-center space-x-2">
+              <div class="w-8 h-8 rounded-lg bg-brand-500/20 text-brand-400 flex items-center justify-center border border-brand-500/30">
+                <i data-lucide="store" class="w-4 h-4"></i>
+              </div>
+              <span>Business Contact & Receipt Details</span>
+            </h2>
+            <div class="space-y-4 text-sm">
+              <div>
+                <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1.5">Club / Shop Name</label>
+                <input type="text" id="setting-shop-name" value="Royal Pool Lounge & Cafe" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white font-semibold focus:outline-none focus:border-brand-500 transition">
+              </div>
+              <div>
+                <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1.5">Address & Phone on POS Receipt</label>
+                <input type="text" id="setting-shop-address" value="MG Road, Andheri West, Mumbai • Ph: +91 98765 43210" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white focus:outline-none focus:border-brand-500 transition">
+              </div>
+              <div>
+                <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1.5">GST / Tax Rate (%)</label>
+                <input type="number" id="setting-tax-rate" value="5" min="0" max="28" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white focus:outline-none focus:border-brand-500 transition w-32">
+              </div>
+              <div class="pt-2">
+                <button onclick="saveShopSettings()" class="px-6 py-3 rounded-xl bg-brand-600 hover:bg-brand-500 text-white font-bold text-sm shadow transition pos-btn">
+                  Save Shop Profile
+                </button>
+              </div>
             </div>
-            <span>Business Contact & Receipt Details</span>
-          </h2>
-          <div class="space-y-4 text-sm">
-            <div>
-              <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1.5">Club / Shop Name</label>
-              <input type="text" id="setting-shop-name" value="Royal Pool Lounge & Cafe" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white font-semibold focus:outline-none focus:border-brand-500 transition">
+          </div>
+
+          <!-- Column 2: Owner Happy Hour Configuration -->
+          <div class="bg-slate-900/90 border border-amber-500/40 rounded-2xl p-6 shadow-lg space-y-5">
+            <div class="flex items-center justify-between">
+              <h2 class="text-lg font-bold text-white flex items-center space-x-2">
+                <div class="w-8 h-8 rounded-lg bg-amber-500/20 text-amber-400 flex items-center justify-center border border-amber-500/30">
+                  <i data-lucide="sparkles" class="w-4 h-4"></i>
+                </div>
+                <span>Happy Hour Special Configuration</span>
+              </h2>
+              <span class="text-[10px] px-2 py-0.5 rounded bg-amber-500/20 text-amber-300 font-mono">Owner Access</span>
             </div>
-            <div>
-              <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1.5">Address & Phone on POS Receipt</label>
-              <input type="text" id="setting-shop-address" value="MG Road, Andheri West, Mumbai • Ph: +91 98765 43210" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white focus:outline-none focus:border-brand-500 transition">
-            </div>
-            <div>
-              <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1.5">GST / Tax Rate (%)</label>
-              <input type="number" id="setting-tax-rate" value="5" min="0" max="28" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white focus:outline-none focus:border-brand-500 transition w-32">
-            </div>
-            <div class="pt-2">
-              <button onclick="saveShopSettings()" class="px-6 py-3 rounded-xl bg-brand-600 hover:bg-brand-500 text-white font-bold text-sm shadow transition pos-btn">
-                Save Shop Profile
-              </button>
+            <p class="text-xs text-slate-400 leading-relaxed">
+              Configure automated daily happy hour time windows and discount slabs for your club. During active happy hours, all table session timers automatically apply this rate reduction.
+            </p>
+            <div class="space-y-4 text-sm">
+              <div class="grid grid-cols-2 gap-3">
+                <div>
+                  <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1.5">System Status</label>
+                  <select id="setting-hh-enabled" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white font-bold text-sm">
+                    <option value="true">🎉 Enabled & Automated</option>
+                    <option value="false">⏹ Disabled</option>
+                  </select>
+                </div>
+                <div>
+                  <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1.5">Rate Discount (%)</label>
+                  <input type="number" id="setting-hh-discount" value="25" min="5" max="90" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-amber-400 font-black text-sm">
+                </div>
+              </div>
+              <div class="grid grid-cols-2 gap-3">
+                <div>
+                  <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1.5">Daily Start Time (`HH:MM`)</label>
+                  <input type="text" id="setting-hh-start" placeholder="11:00" value="11:00" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white font-mono text-sm">
+                </div>
+                <div>
+                  <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1.5">Daily End Time (`HH:MM`)</label>
+                  <input type="text" id="setting-hh-end" placeholder="17:00" value="17:00" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white font-mono text-sm">
+                </div>
+              </div>
+              <div class="pt-2 flex flex-wrap gap-3">
+                <button onclick="saveOwnerHappyHourSettings()" class="flex-1 py-3 px-4 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-black text-sm shadow-lg transition pos-btn">
+                  Save Happy Hour Schedule
+                </button>
+                <button onclick="toggleHappyHourManual()" class="py-3 px-4 rounded-xl bg-slate-800 hover:bg-slate-700 text-amber-300 font-bold text-xs border border-slate-700 transition pos-btn shrink-0">
+                  Manual Toggle ON/OFF
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -1855,6 +1906,7 @@
       document.getElementById('screen-login').classList.add('hidden');
       document.getElementById('screen-app').classList.remove('hidden');
       checkClientAccessOrBlock();
+      switchTab('tables');
       refreshAllUI();
     }
 
@@ -1894,6 +1946,16 @@
       document.getElementById('banner-plan-title').innerText = tenant.plan === '149' ? 'Basic Tier (₹149/mo)' : (tenant.plan === '249' ? 'Pro Tier (₹249/mo)' : 'Ultimate Tier (₹349/mo)');
       document.getElementById('banner-user-count').innerText = tenant.plan === '149' ? '1 Terminal User' : (tenant.plan === '249' ? '3 Multi-User Profiles' : 'Multi-Terminal Cloud Sync');
       document.getElementById('setting-shop-name').value = tenant.name;
+
+      const hh = tenant.happyHour || { enabled: true, startTime: '11:00', endTime: '17:00', discountPercent: 25 };
+      const elHhEn = document.getElementById('setting-hh-enabled');
+      const elHhDisc = document.getElementById('setting-hh-discount');
+      const elHhStart = document.getElementById('setting-hh-start');
+      const elHhEnd = document.getElementById('setting-hh-end');
+      if (elHhEn) elHhEn.value = String(hh.enabled);
+      if (elHhDisc) elHhDisc.value = hh.discountPercent || 25;
+      if (elHhStart) elHhStart.value = hh.startTime || '11:00';
+      if (elHhEnd) elHhEnd.value = hh.endTime || '17:00';
 
       // Update logged in user badge
       const names = { owner: '👑 Owner (Admin)', cashier: '💵 Cashier', waiter: '🧑‍🍳 Waiter' };
@@ -2999,6 +3061,19 @@
       }
     }
 
+    function saveOwnerHappyHourSettings() {
+      const tenant = getCurrentTenant();
+      const enabled = document.getElementById('setting-hh-enabled')?.value === 'true';
+      const discountPercent = parseFloat(document.getElementById('setting-hh-discount')?.value) || 25;
+      const startTime = document.getElementById('setting-hh-start')?.value.trim() || '11:00';
+      const endTime = document.getElementById('setting-hh-end')?.value.trim() || '17:00';
+
+      tenant.happyHour = { enabled, discountPercent, startTime, endTime };
+      saveState();
+      refreshAllUI();
+      alert(`🎉 Happy Hour schedule saved for ${tenant.name} (${enabled ? 'Active from ' + startTime + ' to ' + endTime + ' @ -' + discountPercent + '%' : 'Disabled'})!`);
+    }
+
     /*************************************************************************
      * 9. DASHBOARD METRICS & CHARTS
      *************************************************************************/
@@ -3602,5 +3677,5 @@
       if (modal) modal.classList.add('hidden');
     }
   </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a1c406f97a6dff73',t:'MTc4NDIzNjU3OA=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a1c416bc8c914814',t:'MTc4NDIzNzIyNA=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
