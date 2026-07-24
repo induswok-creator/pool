@@ -184,8 +184,8 @@
     .muted{color:var(--muted)}
 
     /* Modal */
-    .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.45);display:flex;align-items:center;justify-content:center;z-index:80;padding:16px}
-    .modal-box{background:#fff;border-radius:16px;padding:20px;width:600px;max-width:96vw;max-height:90vh;overflow:auto;box-shadow:0 20px 60px rgba(0,0,0,.25)}
+    .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.7);display:flex;align-items:center;justify-content:center;z-index:1000;padding:16px;backdrop-filter:blur(4px)}
+    .modal-box{background:#fff;border-radius:16px;padding:20px;width:600px;max-width:96vw;max-height:90vh;overflow:auto;box-shadow:0 20px 60px rgba(0,0,0,.4)}
     .modal-box.wide{width:900px}
     .modal-header{display:flex;align-items:center;gap:12px;margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid var(--line)}
     .modal-header h2{margin:0;font-size:18px;font-weight:800}
@@ -271,6 +271,8 @@
       main{padding:10px;padding-bottom:80px}
       .stat-grid{grid-template-columns:1fr 1fr}
       .stat-value{font-size:20px}
+      .stat-card{padding:12px}
+      .stat-card .stat-icon{width:30px;height:30px}
       .table-grid{grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:8px}
       .billing-grid{grid-template-columns:1fr}
       .cart-panel{position:static}
@@ -278,9 +280,38 @@
       .grid2,.grid3{grid-template-columns:1fr}
       .section-title{font-size:17px}
       .login-card{width:92vw}
+      .plan-banner{flex-direction:column;align-items:flex-start}
+      .plan-banner>div:last-child{width:100%}
+      .plan-banner>div:last-child button{width:100%}
+      .settings-card{padding:14px}
+      .settings-card .card-row{grid-template-columns:1fr}
+      /* Scrollable filter bars on mobile */
+      .filter-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;padding-bottom:4px}
+      .filter-scroll::-webkit-scrollbar{height:3px}
+      /* Larger touch targets */
+      .pos-btn{min-height:48px}
+      .btn{min-height:40px}
+      /* Modal full screen on mobile */
+      .modal-overlay{padding:0;align-items:flex-end}
+      .modal-box{width:100%;max-width:100%;max-height:95vh;border-radius:16px 16px 0 0}
+      .modal-box.wide{max-width:100%}
+      /* Tables section filters scroll on mobile */
+      #tab-tables>div{flex-direction:column;align-items:stretch!important}
+      #tab-tables h1{font-size:17px}
+      /* Data tables horizontal scroll */
+      .scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+      .data-table{min-width:500px}
+      /* Khata grid single column on mobile */
+      .khata-grid{grid-template-columns:1fr}
     }
     @media(min-width:641px){
       .mob-nav{display:none!important}
+      .filter-scroll{overflow-x:visible}
+    }
+    @media(max-width:380px){
+      .stat-grid{grid-template-columns:1fr}
+      .table-grid{grid-template-columns:1fr}
+      .menu-grid{grid-template-columns:1fr}
     }
   
     /* Fix remaining styled elements */
@@ -296,40 +327,21 @@
       outline: 2px solid var(--red-l);
       border-color: transparent;
     }
-    .app-shell button:not(.role-btn):not(.top-nav button):not(.mob-nav button):not(.login-submit) {
+    /* App shell button base styles */
+    .app-shell button {
+      font-family: inherit;
+      cursor: pointer;
       border-radius: 10px;
       font-weight: 600;
       font-size: 13px;
-      cursor: pointer;
       transition: .12s;
-      border: 1px solid var(--line);
-      background: #fff;
-      color: var(--ink);
       padding: 8px 14px;
-    }
-    .app-shell button.btn-primary, .app-shell button.login-submit {
-      background: var(--red);
-      color: #fff;
-      border-color: var(--red);
-      font-weight: 700;
-    }
-    .app-shell button.btn-ok {
-      background: var(--ok);
-      color: #fff;
-      border-color: var(--ok);
-    }
-    .app-shell button.btn-gold {
-      background: var(--gold);
-      color: #fff;
-      border-color: var(--gold);
-    }
-    .app-shell button.btn-warn {
-      background: var(--warn);
-      color: #fff;
-      border-color: var(--warn);
     }
     .app-shell button:hover {
       box-shadow: var(--shadow);
+    }
+    .app-shell button:active {
+      transform: translateY(1px);
     }
     .top-nav button {
       background: #fff;
@@ -877,23 +889,23 @@
         </div>
 
         <!-- Category Filters -->
-        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px;align-items:center">
-          <span style="font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.04em">Category:</span>
-          <button onclick="setCategoryFilter('all')" class="cat-filter-btn btn-primary btn-sm pos-btn" data-category="all">All Tables</button>
-          <button onclick="setCategoryFilter('Pool')" class="cat-filter-btn btn-ghost btn-sm pos-btn" data-category="Pool">🎱 Pool</button>
-          <button onclick="setCategoryFilter('Snooker')" class="cat-filter-btn btn-ghost btn-sm pos-btn" data-category="Snooker">🎯 Snooker</button>
-          <button onclick="setCategoryFilter('Cafe')" class="cat-filter-btn btn-ghost btn-sm pos-btn" data-category="Cafe">☕ Cafe</button>
-          <button onclick="setCategoryFilter('Gaming')" class="cat-filter-btn btn-ghost btn-sm pos-btn" data-category="Gaming">🎮 PlayStation</button>
-          <button onclick="setCategoryFilter('VIP')" class="cat-filter-btn btn-ghost btn-sm pos-btn" data-category="VIP">👑 VIP</button>
+        <div class="filter-scroll" style="display:flex;gap:8px;flex-wrap:nowrap;margin-bottom:10px;align-items:center;overflow-x:auto">
+          <span style="font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;flex-shrink:0">Category:</span>
+          <button onclick="setCategoryFilter('all')" class="cat-filter-btn btn-primary btn-sm pos-btn" data-category="all" style="flex-shrink:0">All Tables</button>
+          <button onclick="setCategoryFilter('Pool')" class="cat-filter-btn btn-ghost btn-sm pos-btn" data-category="Pool" style="flex-shrink:0"> Pool</button>
+          <button onclick="setCategoryFilter('Snooker')" class="cat-filter-btn btn-ghost btn-sm pos-btn" data-category="Snooker" style="flex-shrink:0">🎯 Snooker</button>
+          <button onclick="setCategoryFilter('Cafe')" class="cat-filter-btn btn-ghost btn-sm pos-btn" data-category="Cafe" style="flex-shrink:0">☕ Cafe</button>
+          <button onclick="setCategoryFilter('Gaming')" class="cat-filter-btn btn-ghost btn-sm pos-btn" data-category="Gaming" style="flex-shrink:0"> PlayStation</button>
+          <button onclick="setCategoryFilter('VIP')" class="cat-filter-btn btn-ghost btn-sm pos-btn" data-category="VIP" style="flex-shrink:0">👑 VIP</button>
         </div>
 
         <!-- Status Filters -->
-        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px;align-items:center">
-          <span style="font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.04em">Status:</span>
-          <button onclick="setStatusFilter('all')" class="status-filter-btn btn-primary btn-sm pos-btn" data-status="all">All</button>
-          <button onclick="setStatusFilter('available')" class="status-filter-btn btn-ghost btn-sm pos-btn" data-status="available">Available</button>
-          <button onclick="setStatusFilter('occupied')" class="status-filter-btn btn-ghost btn-sm pos-btn" data-status="occupied">Playing / Active</button>
-          <button onclick="setStatusFilter('reserved')" class="status-filter-btn btn-ghost btn-sm pos-btn" data-status="reserved">Reserved</button>
+        <div class="filter-scroll" style="display:flex;gap:8px;flex-wrap:nowrap;margin-bottom:14px;align-items:center;overflow-x:auto">
+          <span style="font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;flex-shrink:0">Status:</span>
+          <button onclick="setStatusFilter('all')" class="status-filter-btn btn-primary btn-sm pos-btn" data-status="all" style="flex-shrink:0">All</button>
+          <button onclick="setStatusFilter('available')" class="status-filter-btn btn-ghost btn-sm pos-btn" data-status="available" style="flex-shrink:0">Available</button>
+          <button onclick="setStatusFilter('occupied')" class="status-filter-btn btn-ghost btn-sm pos-btn" data-status="occupied" style="flex-shrink:0">Playing / Active</button>
+          <button onclick="setStatusFilter('reserved')" class="status-filter-btn btn-ghost btn-sm pos-btn" data-status="reserved" style="flex-shrink:0">Reserved</button>
         </div>
 
         <!-- Responsive Table Grid -->
@@ -1246,6 +1258,9 @@
           </div>
         </div>
         <div style="display:flex;align-items:center;gap:8px">
+          <button id="btn-change-game" onclick="changeGameType()" class="btn btn-ghost pos-btn" style="padding:8px 12px;font-size:12px;display:none">
+            🎮 Change Game
+          </button>
           <button id="btn-toggle-timer" onclick="toggleTableTimer()" class="btn-ok pos-btn">
             ▶ Start Timer
           </button>
@@ -1412,10 +1427,6 @@
           <i data-lucide="repeat" ></i>
           <span>Confirm Switch</span>
         </button>
-      </div>
-    </div>
-  </div>
-
       </div>
     </div>
   </div>
@@ -1611,72 +1622,79 @@
 
   <!-- 3.8. IN-APP MENU ITEM & TABLE RATE EDITOR MODAL (NO CHROME DIALOGS) -->
   <div id="modal-menu-editor" class="modal-overlay hidden">
-    <div >
-      <div >
-        <div >
-          <div >
-            📋
-          </div>
-          <div>
-            <h3 id="menu-editor-title" >Add Menu Item or Rate</h3>
-            <p id="menu-editor-subtitle" >Create new cafe item or table session rate.</p>
-          </div>
-        </div>
-        <button onclick="closeModal('modal-menu-editor')" >
-          <i data-lucide="x" ></i>
-        </button>
+    <div class="modal-box" style="max-width:500px">
+      <div style="text-align:center;margin-bottom:16px">
+        <div style="width:56px;height:56px;border-radius:16px;background:#fbeceb;color:var(--red);display:flex;align-items:center;justify-content:center;font-size:28px;margin:0 auto 12px">📋</div>
+        <h3 id="menu-editor-title" style="margin:0;font-size:18px;font-weight:800">Add Menu Item or Rate</h3>
+        <p id="menu-editor-subtitle" style="font-size:13px;color:var(--muted);margin:4px 0 0">Create new cafe item or table session rate.</p>
       </div>
+      <button onclick="closeModal('modal-menu-editor')" style="position:absolute;top:16px;right:16px;background:none;border:none;font-size:20px;cursor:pointer;color:var(--muted)">✕</button>
 
-      <form onsubmit="saveMenuEditorForm(event)" >
+      <form onsubmit="saveMenuEditorForm(event)">
         <input type="hidden" id="menu-editor-orig-id" value="">
         <input type="hidden" id="menu-editor-orig-type" value="item">
         <input type="hidden" id="menu-editor-mode" value="create">
 
-        <div id="menu-editor-type-row">
-          <label >Select Entry Type <span >*</span></label>
-          <div >
-            <button type="button" onclick="selectMenuEditorType('rate')" id="btn-editor-type-rate" >
-              <i data-lucide="clock" ></i>
+        <div id="menu-editor-type-row" style="margin-bottom:14px">
+          <label style="font-size:12px;font-weight:700;color:#555;display:block;margin-bottom:6px">Select Entry Type *</label>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+            <button type="button" onclick="selectMenuEditorType('rate')" id="btn-editor-type-rate" class="btn btn-primary" style="padding:12px">
               <span>Table Hourly Rate</span>
             </button>
-            <button type="button" onclick="selectMenuEditorType('item')" id="btn-editor-type-item" >
-              <i data-lucide="coffee" ></i>
+            <button type="button" onclick="selectMenuEditorType('item')" id="btn-editor-type-item" class="btn btn-ghost" style="padding:12px">
               <span>Cafe Menu Item</span>
             </button>
           </div>
         </div>
 
-        <div>
-          <label id="menu-editor-name-label" >Item Description / Table Rate Name <span >*</span></label>
-          <input type="text" id="menu-editor-name" required placeholder="e.g. VIP Championship Snooker OR Cold Coffee" >
+        <div style="margin-bottom:12px">
+          <label id="menu-editor-name-label" style="font-size:12px;font-weight:700;color:#555;display:block;margin-bottom:6px">Item Description / Table Rate Name *</label>
+          <input type="text" id="menu-editor-name" required placeholder="e.g. VIP Championship Snooker OR Cold Coffee" style="width:100%;padding:12px 14px;border:2px solid var(--line);border-radius:12px;font-size:15px;box-sizing:border-box">
         </div>
 
-        <div >
+        <div style="margin-bottom:12px">
+          <label id="menu-editor-price-label" style="font-size:12px;font-weight:700;color:#555;display:block;margin-bottom:6px">Price / Rate (₹) *</label>
+          <input type="number" id="menu-editor-price" required min="0" step="any" placeholder="200" style="width:100%;padding:12px 14px;border:2px solid var(--line);border-radius:12px;font-size:15px;box-sizing:border-box">
+        </div>
+
+        <div class="grid2" style="gap:10px;margin-bottom:14px">
           <div>
-            <label id="menu-editor-price-label" >Price / Rate (₹) <span >*</span></label>
-            <input type="number" id="menu-editor-price" required min="0" step="any" placeholder="200" >
-          </div>
-          <div id="menu-editor-cat-row">
-            <label >Menu Category</label>
-            <select id="menu-editor-cat" >
+            <label style="font-size:12px;font-weight:700;color:#555;display:block;margin-bottom:6px">Menu Category</label>
+            <select id="menu-editor-cat" style="width:100%;padding:12px 14px;border:2px solid var(--line);border-radius:12px;font-size:14px;box-sizing:border-box;background:#fff">
               <option value="Drinks">Drinks & Beverages</option>
               <option value="Snacks">Quick Snacks</option>
+              <option value="Main Course">Main Course</option>
+              <option value="Desserts">Desserts</option>
+              <option value="Beverages">Premium Beverages</option>
+              <option value="Accessories">Accessories</option>
+              <option value="Services">Services</option>
               <option value="Hookah">Hookah / Sheesha</option>
-              <option value="Accessories">Cues & Accessories</option>
               <option value="Combos">Combo Packages</option>
+            </select>
+          </div>
+          <div>
+            <label style="font-size:12px;font-weight:700;color:#555;display:block;margin-bottom:6px">Available For</label>
+            <select id="menu-editor-table-type" style="width:100%;padding:12px 14px;border:2px solid var(--line);border-radius:12px;font-size:14px;box-sizing:border-box;background:#fff">
+              <option value="all">All Tables</option>
+              <option value="Pool">Pool Tables Only</option>
+              <option value="Snooker">Snooker Tables Only</option>
+              <option value="Gaming">Gaming Stations Only</option>
+              <option value="VIP">VIP Tables Only</option>
+              <option value="Cafe">Cafe Tables Only</option>
             </select>
           </div>
         </div>
 
-        <div >
-          <button type="button" onclick="closeModal('modal-menu-editor')" class="btn-ghost pos-btn">Cancel</button>
-          <button type="submit" id="menu-editor-btn-save" class="btn-primary pos-btn">
-            <i data-lucide="check" ></i>
+        <div id="menu-editor-error" style="color:var(--red);font-size:12px;font-weight:600;margin-bottom:10px;display:none"></div>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+          <button type="button" onclick="closeModal('modal-menu-editor')" class="btn btn-ghost" style="padding:12px">Cancel</button>
+          <button type="submit" id="menu-editor-btn-save" class="btn btn-primary" style="padding:12px">
             <span>Save Entry</span>
           </button>
         </div>
       </form>
-    </div>
+    </div></div>
   </div>
 
   <!-- 4. CLIENT-SAFE SUBSCRIPTION PLAN VIEW MODAL (NO DEV SECRETS EXPOSED) -->
@@ -2154,6 +2172,138 @@
     </div>
   </div>
 
+  
+  <!-- CUSTOMER NAME MODAL (for Basic plan table start) -->
+  <div id="modal-customer-name" class="modal-overlay hidden">
+    <div class="modal-box" style="max-width:420px">
+      <div style="text-align:center;margin-bottom:16px">
+        <div style="width:56px;height:56px;border-radius:16px;background:#fbeceb;color:var(--red);display:flex;align-items:center;justify-content:center;font-size:28px;margin:0 auto 12px">👤</div>
+        <h3 style="margin:0;font-size:18px;font-weight:800">Customer Details</h3>
+        <p style="font-size:13px;color:var(--muted);margin:4px 0 0">Enter customer name to start this table</p>
+      </div>
+      <div style="margin-bottom:12px">
+        <label style="font-size:12px;font-weight:700;color:#555;display:block;margin-bottom:6px">Customer Name</label>
+        <input type="text" id="modal-cust-name-input" placeholder="e.g. Rahul Sharma" style="width:100%;padding:12px 14px;border:2px solid var(--line);border-radius:12px;font-size:15px;box-sizing:border-box">
+      </div>
+      <div style="display:flex;gap:10px">
+        <button onclick="closeModal('modal-customer-name')" class="btn btn-ghost" style="flex:1;padding:12px">Cancel</button>
+        <button onclick="confirmCustomerName()" class="btn btn-primary" style="flex:1;padding:12px">Start Table</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- CREDIT CUSTOMER DETAILS MODAL (proper form) -->
+  <div id="modal-credit-details" class="modal-overlay hidden">
+    <div class="modal-box" style="max-width:440px">
+      <div style="text-align:center;margin-bottom:16px">
+        <div style="width:56px;height:56px;border-radius:16px;background:#fff4e0;color:var(--gold-d);display:flex;align-items:center;justify-content:center;font-size:28px;margin:0 auto 12px">💳</div>
+        <h3 style="margin:0;font-size:18px;font-weight:800">Credit Customer Details</h3>
+        <p style="font-size:13px;color:var(--muted);margin:4px 0 0">Save this bill to customer's Khata ledger</p>
+      </div>
+      <div id="credit-amount-display" style="background:#fdf8f0;border:1px solid var(--line);border-radius:12px;padding:12px;text-align:center;margin-bottom:14px">
+        <div style="font-size:11px;color:var(--muted);font-weight:600">Amount to Save as Credit</div>
+        <div id="credit-amount-value" style="font-size:24px;font-weight:800;color:var(--red)">₹0</div>
+      </div>
+      <div style="margin-bottom:10px">
+        <label style="font-size:12px;font-weight:700;color:#555;display:block;margin-bottom:6px">Customer Full Name *</label>
+        <input type="text" id="credit-name-input" placeholder="e.g. Rahul Sharma" style="width:100%;padding:12px 14px;border:2px solid var(--line);border-radius:12px;font-size:15px;box-sizing:border-box">
+      </div>
+      <div style="margin-bottom:14px">
+        <label style="font-size:12px;font-weight:700;color:#555;display:block;margin-bottom:6px">10-Digit Mobile Number *</label>
+        <div style="display:flex;gap:8px">
+          <span style="padding:12px 10px;background:#f5f5f5;border:2px solid var(--line);border-radius:12px;font-size:14px;font-weight:600;white-space:nowrap">+91</span>
+          <input type="tel" id="credit-phone-input" placeholder="9876543210" maxlength="10" style="flex:1;padding:12px 14px;border:2px solid var(--line);border-radius:12px;font-size:15px;font-family:monospace;box-sizing:border-box">
+        </div>
+      </div>
+      <div id="credit-error-msg" style="color:var(--red);font-size:12px;font-weight:600;margin-bottom:10px;display:none"></div>
+      <div style="display:flex;gap:10px">
+        <button onclick="closeModal('modal-credit-details')" class="btn btn-ghost" style="flex:1;padding:12px">Cancel</button>
+        <button onclick="confirmCreditDetails()" class="btn btn-gold" style="flex:1;padding:12px">💳 Save Credit</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- GAME TYPE SELECTOR MODAL -->
+  <div id="modal-game-type" class="modal-overlay hidden">
+    <div class="modal-box" style="max-width:500px">
+      <div style="text-align:center;margin-bottom:16px">
+        <div style="width:56px;height:56px;border-radius:16px;background:#f3eefa;color:var(--res);display:flex;align-items:center;justify-content:center;font-size:28px;margin:0 auto 12px">🎮</div>
+        <h3 style="margin:0;font-size:18px;font-weight:800">Select Game Type</h3>
+        <p style="font-size:13px;color:var(--muted);margin:4px 0 0">Choose the game being played on this table</p>
+      </div>
+      <div id="game-type-options" style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px">
+        <!-- Populated dynamically based on table type -->
+      </div>
+      <button onclick="closeModal('modal-game-type')" class="btn btn-ghost" style="width:100%;padding:12px">Cancel</button>
+    </div>
+  </div>
+
+  
+  <!-- DEV CUSTOMER MODAL -->
+  <div id="modal-dev-customer" class="modal-overlay hidden">
+    <div class="modal-box" style="max-width:420px">
+      <div style="text-align:center;margin-bottom:16px">
+        <div style="width:56px;height:56px;border-radius:16px;background:#f3eefa;color:var(--res);display:flex;align-items:center;justify-content:center;font-size:28px;margin:0 auto 12px">👥</div>
+        <h3 style="margin:0;font-size:18px;font-weight:800">Add Khata Customer</h3>
+        <p style="font-size:13px;color:var(--muted);margin:4px 0 0">Enter customer details for credit ledger</p>
+      </div>
+      <div style="margin-bottom:10px">
+        <label style="font-size:12px;font-weight:700;color:#555;display:block;margin-bottom:6px">Customer Full Name *</label>
+        <input type="text" id="dev-cust-name" placeholder="e.g. Rahul Sharma" style="width:100%;padding:12px 14px;border:2px solid var(--line);border-radius:12px;font-size:15px;box-sizing:border-box">
+      </div>
+      <div style="margin-bottom:14px">
+        <label style="font-size:12px;font-weight:700;color:#555;display:block;margin-bottom:6px">10-Digit Mobile Number *</label>
+        <div style="display:flex;gap:8px">
+          <span style="padding:12px 10px;background:#f5f5f5;border:2px solid var(--line);border-radius:12px;font-size:14px;font-weight:600">+91</span>
+          <input type="tel" id="dev-cust-mobile" placeholder="9876543210" maxlength="10" style="flex:1;padding:12px 14px;border:2px solid var(--line);border-radius:12px;font-size:15px;font-family:monospace;box-sizing:border-box">
+        </div>
+      </div>
+      <div id="dev-cust-error" style="color:var(--red);font-size:12px;font-weight:600;margin-bottom:10px;display:none"></div>
+      <div style="display:flex;gap:10px">
+        <button onclick="closeModal('modal-dev-customer')" class="btn btn-ghost" style="flex:1;padding:12px">Cancel</button>
+        <button onclick="confirmDevCustomer()" class="btn btn-primary" style="flex:1;padding:12px">Add Customer</button>
+      </div>
+    </div>
+  </div>
+
+  
+  <!-- ADD TABLE MODAL -->
+  <div id="modal-add-table" class="modal-overlay hidden">
+    <div class="modal-box" style="max-width:440px">
+      <div style="text-align:center;margin-bottom:16px">
+        <div style="width:56px;height:56px;border-radius:16px;background:#e7f7ee;color:var(--ok);display:flex;align-items:center;justify-content:center;font-size:28px;margin:0 auto 12px"></div>
+        <h3 style="margin:0;font-size:18px;font-weight:800">Add New Table</h3>
+        <p style="font-size:13px;color:var(--muted);margin:4px 0 0">Configure table type and hourly rate</p>
+      </div>
+      <div style="margin-bottom:10px">
+        <label style="font-size:12px;font-weight:700;color:#555;display:block;margin-bottom:6px">Table Name *</label>
+        <input type="text" id="add-table-name" placeholder="e.g. Pool Table 5, Snooker VIP" style="width:100%;padding:12px 14px;border:2px solid var(--line);border-radius:12px;font-size:15px;box-sizing:border-box">
+      </div>
+      <div style="margin-bottom:10px">
+        <label style="font-size:12px;font-weight:700;color:#555;display:block;margin-bottom:6px">Table Category *</label>
+        <select id="add-table-type" onchange="onAddTableTypeChange()" style="width:100%;padding:12px 14px;border:2px solid var(--line);border-radius:12px;font-size:15px;box-sizing:border-box;background:#fff">
+          <option value="Pool">🎱 Pool Table</option>
+          <option value="Snooker">🎯 Snooker Table</option>
+          <option value="Gaming">🎮 PlayStation Station</option>
+          <option value="Cafe">☕ Cafe Table</option>
+          <option value="VIP">👑 VIP Table</option>
+        </select>
+      </div>
+      <div style="margin-bottom:14px">
+        <label style="font-size:12px;font-weight:700;color:#555;display:block;margin-bottom:6px">Hourly Rate</label>
+        <select id="add-table-rate" style="width:100%;padding:12px 14px;border:2px solid var(--line);border-radius:12px;font-size:15px;box-sizing:border-box;background:#fff">
+          <option value="200">₹200/hr - Standard</option>
+          <option value="350">₹350/hr - VIP</option>
+        </select>
+      </div>
+      <div id="add-table-error" style="color:var(--red);font-size:12px;font-weight:600;margin-bottom:10px;display:none"></div>
+      <div style="display:flex;gap:10px">
+        <button onclick="closeModal('modal-add-table')" class="btn btn-ghost" style="flex:1;padding:12px">Cancel</button>
+        <button onclick="confirmAddTable()" class="btn btn-ok" style="flex:1;padding:12px">Add Table</button>
+      </div>
+    </div>
+  </div>
+
   <!-- 7. RECEIPT PRINT PREVIEW MODAL -->
   <div id="modal-receipt" class="modal-overlay hidden">
     <div class="modal-box" style="max-width:400px">
@@ -2324,12 +2474,52 @@
         { id: 'rate_4', name: 'PS5 & PC Gaming Station', rate: 180 }
       ],
       menuItems: [
-        { id: 'item_1', name: 'Cold Coffee with Ice Cream', price: 140, category: 'Drinks' },
-        { id: 'item_2', name: 'French Fries (Peri Peri)', price: 120, category: 'Snacks' },
-        { id: 'item_3', name: 'Cheese Garlic Bread', price: 160, category: 'Snacks' },
-        { id: 'item_4', name: 'Iced Lemon Tea', price: 90, category: 'Drinks' },
-        { id: 'item_5', name: 'Red Bull Energy Drink', price: 180, category: 'Drinks' },
-        { id: 'item_6', name: 'Pool Cue Tip Replacement', price: 150, category: 'Accessories' }
+        // Pool Table Items
+        { id: 'pool_1', name: 'Cold Coffee with Ice Cream', price: 140, category: 'Drinks', tableType: 'Pool' },
+        { id: 'pool_2', name: 'French Fries (Peri Peri)', price: 120, category: 'Snacks', tableType: 'Pool' },
+        { id: 'pool_3', name: 'Cheese Garlic Bread', price: 160, category: 'Snacks', tableType: 'Pool' },
+        { id: 'pool_4', name: 'Iced Lemon Tea', price: 90, category: 'Drinks', tableType: 'Pool' },
+        { id: 'pool_5', name: 'Red Bull Energy Drink', price: 180, category: 'Drinks', tableType: 'Pool' },
+        { id: 'pool_6', name: 'Pool Cue Tip Replacement', price: 150, category: 'Accessories', tableType: 'Pool' },
+        { id: 'pool_7', name: 'Chalk Set (Premium)', price: 200, category: 'Accessories', tableType: 'Pool' },
+        { id: 'pool_8', name: 'Extended Play (30 min)', price: 100, category: 'Services', tableType: 'Pool' },
+        // Snooker Table Items
+        { id: 'snooker_1', name: 'Cold Coffee with Ice Cream', price: 140, category: 'Drinks', tableType: 'Snooker' },
+        { id: 'snooker_2', name: 'French Fries (Peri Peri)', price: 120, category: 'Snacks', tableType: 'Snooker' },
+        { id: 'snooker_3', name: 'Cheese Garlic Bread', price: 160, category: 'Snacks', tableType: 'Snooker' },
+        { id: 'snooker_4', name: 'Iced Lemon Tea', price: 90, category: 'Drinks', tableType: 'Snooker' },
+        { id: 'snooker_5', name: 'Red Bull Energy Drink', price: 180, category: 'Drinks', tableType: 'Snooker' },
+        { id: 'snooker_6', name: 'Snooker Cue Hire', price: 100, category: 'Accessories', tableType: 'Snooker' },
+        { id: 'snooker_7', name: 'Score Card & Pencil', price: 50, category: 'Accessories', tableType: 'Snooker' },
+        { id: 'snooker_8', name: 'Tournament Entry Fee', price: 500, category: 'Services', tableType: 'Snooker' },
+        // Gaming Station Items
+        { id: 'gaming_1', name: 'Energy Drink (Monster)', price: 200, category: 'Drinks', tableType: 'Gaming' },
+        { id: 'gaming_2', name: 'Pizza Slice', price: 180, category: 'Snacks', tableType: 'Gaming' },
+        { id: 'gaming_3', name: 'Nachos & Cheese', price: 220, category: 'Snacks', tableType: 'Gaming' },
+        { id: 'gaming_4', name: 'French Fries', price: 120, category: 'Snacks', tableType: 'Gaming' },
+        { id: 'gaming_5', name: 'Soft Drink (Coke/Sprite)', price: 80, category: 'Drinks', tableType: 'Gaming' },
+        { id: 'gaming_6', name: 'Extra Controller', price: 100, category: 'Accessories', tableType: 'Gaming' },
+        { id: 'gaming_7', name: 'Gaming Headset', price: 150, category: 'Accessories', tableType: 'Gaming' },
+        // VIP Table Items (Premium)
+        { id: 'vip_1', name: 'Premium Whiskey (60ml)', price: 800, category: 'Beverages', tableType: 'VIP' },
+        { id: 'vip_2', name: 'Champagne Bottle', price: 3500, category: 'Beverages', tableType: 'VIP' },
+        { id: 'vip_3', name: 'Premium Cigar', price: 1200, category: 'Accessories', tableType: 'VIP' },
+        { id: 'vip_4', name: 'Fruit Platter (Premium)', price: 600, category: 'Snacks', tableType: 'VIP' },
+        { id: 'vip_5', name: 'Dry Fruits & Nuts', price: 450, category: 'Snacks', tableType: 'VIP' },
+        { id: 'vip_6', name: 'Private Butler Service', price: 1000, category: 'Services', tableType: 'VIP' },
+        { id: 'vip_7', name: 'Cold Coffee (Premium)', price: 200, category: 'Drinks', tableType: 'VIP' },
+        // Cafe Table Items
+        { id: 'cafe_1', name: 'Cappuccino', price: 120, category: 'Drinks', tableType: 'Cafe' },
+        { id: 'cafe_2', name: 'Latte', price: 140, category: 'Drinks', tableType: 'Cafe' },
+        { id: 'cafe_3', name: 'Sandwich (Veg)', price: 180, category: 'Snacks', tableType: 'Cafe' },
+        { id: 'cafe_4', name: 'Sandwich (Non-Veg)', price: 220, category: 'Snacks', tableType: 'Cafe' },
+        { id: 'cafe_5', name: 'Pasta Alfredo', price: 280, category: 'Main Course', tableType: 'Cafe' },
+        { id: 'cafe_6', name: 'Chocolate Brownie', price: 160, category: 'Desserts', tableType: 'Cafe' },
+        { id: 'cafe_7', name: 'Cold Coffee with Ice Cream', price: 140, category: 'Drinks', tableType: 'Cafe' },
+        { id: 'cafe_8', name: 'French Fries (Peri Peri)', price: 120, category: 'Snacks', tableType: 'Cafe' },
+        { id: 'cafe_9', name: 'Cheese Garlic Bread', price: 160, category: 'Snacks', tableType: 'Cafe' },
+        { id: 'cafe_10', name: 'Iced Lemon Tea', price: 90, category: 'Drinks', tableType: 'Cafe' },
+        { id: 'cafe_11', name: 'Red Bull Energy Drink', price: 180, category: 'Drinks', tableType: 'Cafe' }
       ],
       tables: [
         { id: 'tbl_1', name: 'Pool Table 1', type: 'Pool', status: 'occupied', rate: 200, startTime: Date.now() - (42 * 60 * 1000), cart: [{ id: 'item_1', name: 'Cold Coffee with Ice Cream', price: 140, qty: 2 }] },
@@ -2728,6 +2918,28 @@
       renderTableGrid();
     }
 
+    // Professional Pool & Snooker Billing Formula:
+    // 1. Minimum 1 Full Hour Charge (rate) up to first 60 minutes (even for 1 or 2 mins).
+    // 2. After 60 minutes, billed in 15-minute slab blocks (rate / 4 per 15-min block).
+    function calculateTableTimeCharge(elapsedSeconds, rate, isHappyHourSlot = false) {
+      if (!elapsedSeconds || elapsedSeconds <= 0) return 0;
+      const minutes = Math.ceil(elapsedSeconds / 60);
+      const baseRate = rate || 200;
+      const hourlyRate = (typeof isManualHappyHour !== 'undefined' && isManualHappyHour) || isHappyHourSlot ? Math.round(baseRate * 0.75) : baseRate;
+      
+      // First 60 minutes (1 min up to 60 mins) = Minimum 1 Full Hour Charge
+      if (minutes <= 60) {
+        return hourlyRate;
+      }
+      
+      // After 60 minutes: base 1 hour charge + 15-minute slab blocks
+      const extraMinutes = minutes - 60;
+      const extraBlocks = Math.ceil(extraMinutes / 15);
+      const blockCharge = Math.round((hourlyRate / 4) * extraBlocks);
+      
+      return hourlyRate + blockCharge;
+    }
+
     function setStatusFilter(status) {
       activeStatusFilter = status;
       document.querySelectorAll('.status-filter-btn').forEach(b => {
@@ -2787,14 +2999,14 @@
             </div>
             <h3 style="font-size:17px;font-weight:800;margin:0 0 4px;display:flex;align-items:center;justify-content:space-between">
               <span style="color:var(--ink)">${t.name}</span>
-              <span style="font-size:12px;font-weight:600;color:${isManualHappyHour || isHappySlot ? 'var(--gold-d)' : 'var(--muted)'}">₹${activeHourlyRate}/hr ${isManualHappyHour || isHappySlot ? '<span style="font-size:10px">(🎉 HH)</span>' : ''}</span>
+              <span style="font-size:12px;font-weight:600;color:${isManualHappyHour || isHappySlot ? 'var(--gold-d)' : 'var(--muted)'}">${t.type === 'Cafe' ? '☕ Cafe' : (t.gameType ? t.gameType : '₹'+activeHourlyRate+'/hr')} ${isManualHappyHour || isHappySlot ? '<span style="font-size:10px">(🎉 HH)</span>' : ''}</span>
             </h3>
             ${isReserved ? `<div style="font-size:11px;color:var(--warn);font-weight:600;margin-top:4px">For: ${t.reservation?.name || 'VIP Member'} (${t.reservation?.phone || ''})</div>` : ''}
           </div>
           <div style="margin-top:10px;padding-top:10px;border-top:1px dashed var(--line);display:flex;align-items:center;justify-content:space-between">
             <div>
-              <div style="font-size:11px;color:var(--muted);font-weight:600">${isReserved ? 'Booking Status' : 'Elapsed Duration'}</div>
-              <div style="font-family:monospace;font-weight:700;font-size:15px;color:${isOccupied ? 'var(--ok)' : (isReserved ? 'var(--warn)' : 'var(--muted)')}" id="grid-timer-${t.id}">${isReserved ? 'Tap to Check-In' : timeStr}</div>
+              <div style="font-size:11px;color:var(--muted);font-weight:600">${isReserved ? 'Booking Status' : (t.type === 'Cafe' ? 'Status' : 'Elapsed Duration')}</div>
+              <div style="font-family:monospace;font-weight:700;font-size:15px;color:${isOccupied ? 'var(--ok)' : (isReserved ? 'var(--warn)' : 'var(--muted)')}" id="grid-timer-${t.id}">${isReserved ? 'Tap to Check-In' : (t.type === 'Cafe' && isOccupied ? 'Open' : timeStr)}</div>
             </div>
             <div style="text-align:right">
               <div style="font-size:11px;color:var(--muted);font-weight:600">Estimated Bill</div>
@@ -2828,43 +3040,72 @@
       });
     }
 
+
+    function changeGameType() {
+      const table = appState.tables.find(t => t.id === currentTableBillingId);
+      if (table) {
+        showGameTypeSelector(table);
+      }
+    }
+
     function openBillingModal(tableId) {
       currentTableBillingId = tableId;
       const table = appState.tables.find(t => t.id === tableId);
       if (!table) return;
 
+      const isCafe = table.type === 'Cafe';
+      
       document.getElementById('billing-table-name').innerText = table.name;
       const statusEl = document.getElementById('billing-table-status');
       const btnToggle = document.getElementById('btn-toggle-timer');
       const btnReserve = document.getElementById('btn-reserve-table');
+      const rateSelector = document.getElementById('billing-rate-selector');
+      const sessionTimerEl = document.getElementById('billing-session-timer');
+      const timeDurationEl = document.getElementById('summary-time-duration');
+      const timeCostEl = document.getElementById('summary-time-cost');
+
+      // Hide timer display for cafe tables
+      if (sessionTimerEl) sessionTimerEl.style.display = isCafe ? 'none' : 'inline';
+
+      // Hide/show timer and rate selector for cafe tables
+      if (btnToggle) btnToggle.style.display = isCafe ? 'none' : 'flex';
+      if (rateSelector) rateSelector.style.display = isCafe ? 'none' : 'block';
 
       // Show customer name in status if available
       const customerInfo = table.customerName ? ` • 👤 ${table.customerName}` : '';
 
       if (table.status === 'occupied') {
-        if (statusEl) statusEl.innerText = `🟢 Active Session Running${customerInfo}`;
-        if (btnToggle) {
-          btnToggle.className = "px-3.5 py-2 rounded-xl bg-red-600 hover:bg-red-500  font-bold text-xs transition shadow flex items-center space-x-1 pos-btn";
+        if (statusEl) {
+          const gameInfo = table.gameType ? ` (${table.gameType})` : '';
+          statusEl.innerText = isCafe ? `🟢 Open${customerInfo}` : `🟢 Active${gameInfo}${customerInfo}`;
+        }
+        if (btnToggle && !isCafe) {
+          btnToggle.className = "px-3.5 py-2 rounded-xl bg-red-600 hover:bg-red-500 font-bold text-xs transition shadow flex items-center space-x-1 pos-btn";
           btnToggle.innerHTML = `<span>⏸ Stop Timer</span>`;
         }
         if (btnReserve) btnReserve.style.display = 'none';
       } else if (table.status === 'reserved') {
         if (statusEl) statusEl.innerText = `🟡 Reserved for ${table.reservation?.name || 'VIP Member'} (@ ${table.reservation?.time || 'Soon'})`;
-        if (btnToggle) {
+        if (btnToggle && !isCafe) {
           btnToggle.className = "px-3.5 py-2 rounded-xl btn-gold font-black text-xs transition shadow flex items-center space-x-1 pos-btn";
           btnToggle.innerHTML = `<span>▶ Check-In & Start</span>`;
         }
         if (btnReserve) btnReserve.style.display = 'none';
       } else {
         if (statusEl) statusEl.innerText = '⚪ Available / Ready';
-        if (btnToggle) {
+        if (btnToggle && !isCafe) {
           btnToggle.className = "px-3.5 py-2 rounded-xl btn-ok font-bold text-xs transition shadow flex items-center space-x-1 pos-btn";
           btnToggle.innerHTML = `<span>▶ Start Session Timer</span>`;
         }
         if (btnReserve) btnReserve.style.display = 'flex';
       }
 
-      document.getElementById('billing-rate-selector').value = table.rate || 200;
+      if (!isCafe) {
+        document.getElementById('billing-rate-selector').value = table.rate || 200;
+        // Show change game button for occupied non-cafe tables
+        const changeGameBtn = document.getElementById('btn-change-game');
+        if (changeGameBtn) changeGameBtn.style.display = table.status === 'occupied' ? 'flex' : 'none';
+      }
       renderBillingMenu();
       updateBillingDrawerTotals();
 
@@ -2876,19 +3117,26 @@
       const table = appState.tables.find(t => t.id === currentTableBillingId);
       if (!table) return;
 
+      const isCafe = table.type === 'Cafe';
+
       if (table.status === 'occupied') {
         table.status = 'available';
         table.customerName = '';
+        table.startTime = null;
+        table.gameType = '';
         playPosBeep('stop');
       } else {
-        // Basic plan (₹149): ask customer name before starting timer
-        const tenant = getCurrentTenant();
-        if (tenant.plan === '149' && !table.customerName) {
-          const name = prompt('👤 Enter Customer Name (required for Basic Plan):');
-          if (!name || !name.trim()) {
-            return; // Cancel if no name entered
-          }
-          table.customerName = name.trim();
+        // ALL plans: ask customer name before starting (not for cafe)
+        if (!table.customerName && !isCafe) {
+          document.getElementById('modal-cust-name-input').value = '';
+          document.getElementById('modal-customer-name').classList.remove('hidden');
+          setTimeout(() => document.getElementById('modal-cust-name-input').focus(), 200);
+          return;
+        }
+        // Show game type selector for non-cafe tables
+        if (!isCafe) {
+          showGameTypeSelector(table);
+          return;
         }
         table.status = 'occupied';
         table.reservation = null;
@@ -2898,6 +3146,118 @@
       saveState();
       openBillingModal(table.id);
       renderTableGrid();
+    }
+
+    function confirmCustomerName() {
+      const name = document.getElementById('modal-cust-name-input').value.trim();
+      if (!name) {
+        document.getElementById('modal-cust-name-input').style.borderColor = 'var(--red)';
+        document.getElementById('modal-cust-name-input').focus();
+        return;
+      }
+      closeModal('modal-customer-name');
+      const table = appState.tables.find(t => t.id === currentTableBillingId);
+      if (table) {
+        table.customerName = name;
+        // Now show game type selector
+        if (table.type !== 'Cafe') {
+          showGameTypeSelector(table);
+        } else {
+          table.status = 'occupied';
+          table.reservation = null;
+          if (!table.startTime) table.startTime = Date.now();
+          playPosBeep('start');
+          saveState();
+          openBillingModal(table.id);
+          renderTableGrid();
+        }
+      }
+    }
+
+        function showGameTypeSelector(table) {
+      const container = document.getElementById('game-type-options');
+      const typeLabel = document.querySelector('#modal-game-type h3');
+      
+      let games = [];
+      let categoryTitle = 'Select Game';
+      
+      if (table.type === 'Pool') {
+        categoryTitle = '🎱 Select Pool Game';
+        games = [
+          {name: '8-Ball Pool', icon: '🎱'},
+          {name: '9-Ball Pool', icon: '9️'},
+          {name: 'Straight Pool (14.1)', icon: '🎱'},
+          {name: 'One Pocket', icon: '🕳️'},
+          {name: 'Bank Pool', icon: '💰'},
+          {name: 'Rotation', icon: ''}
+        ];
+      } else if (table.type === 'Snooker') {
+        categoryTitle = '🎯 Select Snooker Game';
+        games = [
+          {name: 'English Snooker', icon: '🇬🇧'},
+          {name: 'American Snooker', icon: '🇺🇸'},
+          {name: 'Six-Red Snooker', icon: '6️⃣'},
+          {name: 'Snooker Plus', icon: '➕'},
+          {name: 'Power Snooker', icon: ''},
+          {name: 'Practice Frame', icon: '🏋️'}
+        ];
+      } else if (table.type === 'Gaming') {
+        categoryTitle = ' Select PS Game';
+        games = [
+          {name: 'FIFA 24', icon: '⚽'},
+          {name: 'GTA V', icon: '🚗'},
+          {name: 'Call of Duty', icon: '🔫'},
+          {name: 'Minecraft', icon: '⛏️'},
+          {name: 'Fortnite', icon: '️'},
+          {name: 'Spider-Man 2', icon: '️'},
+          {name: 'God of War', icon: '⚔️'},
+          {name: 'Other Game', icon: ''}
+        ];
+      } else if (table.type === 'VIP') {
+        categoryTitle = '👑 VIP Experience';
+        games = [
+          {name: 'VIP Pool Match', icon: '🎱'},
+          {name: 'VIP Snooker', icon: ''},
+          {name: 'Private Party', icon: '🎉'},
+          {name: 'Tournament', icon: '🏆'},
+          {name: 'Corporate Event', icon: '💼'},
+          {name: 'Birthday Package', icon: '🎂'}
+        ];
+      } else if (table.type === 'Cafe') {
+        categoryTitle = '☕ Cafe Order';
+        games = [
+          {name: 'Dine-in', icon: '🍽️'},
+          {name: 'Takeaway', icon: '🥡'},
+          {name: 'Delivery', icon: '🚚'}
+        ];
+      }
+      
+      if (typeLabel) typeLabel.innerText = categoryTitle;
+      
+      const cols = games.length > 4 ? 3 : 2;
+      container.style.gridTemplateColumns = `repeat(${cols}, 1fr)`;
+      container.innerHTML = games.map(g => `
+        <button onclick="selectGameType('${g.name}')" style="padding:14px;border:2px solid var(--line);border-radius:14px;background:#fff;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:6px;transition:.15s" onmouseover="this.style.borderColor='var(--red)';this.style.background='#fdf8f0'" onmouseout="this.style.borderColor='var(--line)';this.style.background='#fff'">
+          <span style="font-size:28px">${g.icon}</span>
+          <span style="font-size:12px;font-weight:700;color:var(--ink)">${g.name}</span>
+        </button>
+      `).join('');
+      document.getElementById('modal-game-type').classList.remove('hidden');
+    }
+
+    function selectGameType(gameName) {
+      closeModal('modal-game-type');
+      const table = appState.tables.find(t => t.id === currentTableBillingId);
+      if (table) {
+        table.gameType = gameName;
+        table.status = 'occupied';
+        table.reservation = null;
+        if (!table.startTime) table.startTime = Date.now();
+        playPosBeep('start');
+        saveState();
+        openBillingModal(table.id);
+        renderTableGrid();
+      }
     }
 
     function changeTableRate(rate) {
@@ -3152,8 +3512,17 @@
       if (!grid) return;
       grid.innerHTML = '';
 
+      const table = appState.tables.find(t => t.id === currentTableBillingId);
+      const tableType = table ? table.type : 'all';
+
       appState.menuItems.forEach(item => {
+        // Filter by query
         if (query && !item.name.toLowerCase().includes(query)) return;
+        
+        // Show ONLY items for this table type (not 'all' items)
+        const itemTableType = item.tableType || 'all';
+        if (itemTableType !== tableType) return;
+        
         const btn = document.createElement('div');
         btn.className = 'menu-item-card pos-btn';
         btn.onclick = () => addItemToTableCart(item.id);
@@ -3166,6 +3535,11 @@
         `;
         grid.appendChild(btn);
       });
+      
+      // Show message if no items
+      if (grid.children.length === 0) {
+        grid.innerHTML = '<div style="text-align:center;padding:20px;color:var(--muted);font-size:13px">No menu items available for this table type</div>';
+      }
     }
 
     function addItemToTableCart(itemId) {
@@ -3203,9 +3577,10 @@
       const table = appState.tables.find(t => t.id === currentTableBillingId);
       if (!table) return;
 
+      const isCafe = table.type === 'Cafe';
       const elapsedSeconds = (table.status === 'occupied' && table.startTime) ? Math.floor((Date.now() - table.startTime) / 1000) : 0;
       const elapsedMinutes = Math.ceil(elapsedSeconds / 60);
-      const timeCost = (table.status === 'occupied' && table.startTime) ? calculateTableTimeCharge(elapsedSeconds, table.rate || 200) : 0;
+      const timeCost = (table.status === 'occupied' && table.startTime && !isCafe) ? calculateTableTimeCharge(elapsedSeconds, table.rate || 200) : 0;
 
       const timerEl = document.getElementById('billing-session-timer');
       if (timerEl) timerEl.innerText = formatElapsedSeconds(elapsedSeconds);
@@ -3292,8 +3667,9 @@
       const table = appState.tables.find(t => t.id === currentTableBillingId);
       if (!table) return;
 
+      const isCafe = table.type === 'Cafe';
       const elapsedSeconds = (table.status === 'occupied' && table.startTime) ? Math.floor((Date.now() - table.startTime) / 1000) : 0;
-      const timeCost = (table.status === 'occupied' && table.startTime) ? calculateTableTimeCharge(elapsedSeconds, table.rate || 200) : 0;
+      const timeCost = (table.status === 'occupied' && table.startTime && !isCafe) ? calculateTableTimeCharge(elapsedSeconds, table.rate || 200) : 0;
       const itemsSubtotal = (table.cart || []).reduce((sum, item) => sum + (item.price * item.qty), 0);
       const rawSubtotal = itemsSubtotal + timeCost;
       if (rawSubtotal <= 0) {
@@ -3311,7 +3687,8 @@
       const totalDue = subtotal + tax;
 
       const billNo = `BILL-${1042 + appState.bills.length}`;
-      const sessionLabel = `${table.name} Session (${Math.ceil(elapsedSeconds/60)}m @ ₹${table.rate||200}/hr — Min 1h + 15m slabs)`;
+      const gameInfo = table.gameType ? ` - ${table.gameType}` : '';
+      const sessionLabel = `${table.name} Session${gameInfo} (${Math.ceil(elapsedSeconds/60)}m @ ₹${table.rate||200}/hr — Min 1h + 15m slabs)`;
       const newBill = {
         id: billNo,
         tenantId: appState.currentTenantId,
@@ -3319,7 +3696,7 @@
         customerName: 'Walk-in Customer',
         customerMobile: '-',
         items: [
-          ...(timeCost > 0 ? [{ name: sessionLabel, price: timeCost, qty: 1 }] : []),
+          ...(!isCafe && timeCost > 0 ? [{ name: sessionLabel, price: timeCost, qty: 1 }] : []),
           ...(table.cart || [])
         ],
         timeCost,
@@ -3366,23 +3743,17 @@
 
       pendingCreditSettlementData = { table, timeCost, subtotal, tax, totalDue, elapsedSeconds };
 
-      // Pro (249) and Ultimate (349) plans: show customer modal for credit settlement
+      // Pro (249) and Ultimate (349) plans: show proper credit details modal
       if (tenant.plan === '349' || tenant.plan === '249') {
-        document.getElementById('credit-modal-amount').innerText = `₹${totalDue}`;
-        document.getElementById('credit-customer-name').value = table.customerName || '';
-        document.getElementById('credit-customer-mobile').value = '';
-        // Update modal text based on plan
-        const modalTitle = document.querySelector('#modal-credit-customer h3');
-        const modalSub = document.querySelector('#modal-credit-customer p');
-        if (tenant.plan === '349') {
-          if (modalTitle) modalTitle.textContent = 'Record Credit Customer';
-          if (modalSub) modalSub.textContent = 'Mandatory on Ultimate Plan for accurate Khata ledger & WhatsApp reminders.';
-        } else {
-          if (modalTitle) modalTitle.textContent = 'Credit Customer Details';
-          if (modalSub) modalSub.textContent = 'Enter customer name and phone to save this credit bill.';
-        }
-        document.getElementById('modal-credit-customer').classList.remove('hidden');
-        if (window.lucide) lucide.createIcons();
+        document.getElementById('credit-amount-value').innerText = `₹${totalDue}`;
+        document.getElementById('credit-name-input').value = table.customerName || '';
+        document.getElementById('credit-phone-input').value = '';
+        document.getElementById('credit-error-msg').style.display = 'none';
+        document.getElementById('modal-credit-details').classList.remove('hidden');
+        setTimeout(() => document.getElementById('credit-name-input').focus(), 200);
+        // Store pending data for the confirm function
+        window._pendingCreditData = pendingCreditSettlementData;
+        return;
       } else {
         finalizeBillAsCredit('Udhar Customer', '-');
       }
@@ -3412,6 +3783,30 @@
       finalizeBillAsCredit(nameInput, mobileInput);
     }
 
+
+    function confirmCreditDetails() {
+      const nameInput = document.getElementById('credit-name-input').value.trim();
+      const mobileInput = document.getElementById('credit-phone-input').value.trim();
+      const errorEl = document.getElementById('credit-error-msg');
+      
+      if (!nameInput) {
+        errorEl.innerText = 'Please enter customer name';
+        errorEl.style.display = 'block';
+        document.getElementById('credit-name-input').style.borderColor = 'var(--red)';
+        return;
+      }
+      if (!mobileInput || mobileInput.length < 10 || !/^\d{10}$/.test(mobileInput)) {
+        errorEl.innerText = 'Please enter a valid 10-digit mobile number';
+        errorEl.style.display = 'block';
+        document.getElementById('credit-phone-input').style.borderColor = 'var(--red)';
+        return;
+      }
+      
+      closeModal('modal-credit-details');
+      pendingCreditSettlementData = window._pendingCreditData;
+      finalizeBillAsCredit(nameInput, mobileInput);
+    }
+
     function finalizeBillAsCredit(customerName, customerMobile) {
       if (!pendingCreditSettlementData) return;
       const { table, timeCost, subtotal, tax, totalDue, elapsedSeconds } = pendingCreditSettlementData;
@@ -3423,7 +3818,8 @@
       }
 
       const billNo = `BILL-${1042 + appState.bills.length}`;
-      const sessionLabel = `${table.name} Session (${Math.ceil(elapsedSeconds/60)}m @ ₹${table.rate||200}/hr — Min 1h + 15m slabs)`;
+      const gameInfo = table.gameType ? ` - ${table.gameType}` : '';
+      const sessionLabel = `${table.name} Session${gameInfo} (${Math.ceil(elapsedSeconds/60)}m @ ₹${table.rate||200}/hr — Min 1h + 15m slabs)`;
       const newBill = {
         id: billNo,
         tenantId: appState.currentTenantId,
@@ -3579,7 +3975,7 @@
       const shopName = getCurrentTenant().name;
       const text = `Hello ${name}, friendly payment reminder from ${shopName}. You have an outstanding balance of ₹${amount}. Kindly clear your dues via UPI or cash at your earliest convenience. Thank you!`;
       const url = `https://wa.me/91${mobile}?text=${encodeURIComponent(text)}`;
-      window.open(url, '_blank');
+      window.open(url, '_self');
     }
 
     function sendKhataReminder(channel) {
@@ -3591,7 +3987,7 @@
       const text = `Hello ${cust.name}, friendly reminder from ${shopName}. Your pending credit balance is ₹${cust.totalCredit}. Please settle via UPI or cash. Thank you!`;
 
       if (channel === 'whatsapp') {
-        window.open(`https://wa.me/91${cust.mobile}?text=${encodeURIComponent(text)}`, '_blank');
+        window.open(`https://wa.me/91${cust.mobile}?text=${encodeURIComponent(text)}`, '_self');
       } else {
         window.open(`sms:${cust.mobile}?body=${encodeURIComponent(text)}`, '_self');
       }
@@ -3622,13 +4018,32 @@
     }
 
     function openNewCustomerModal() {
-      const name = prompt("Enter Customer Full Name:");
-      if (!name) return;
-      const mobile = prompt("Enter Customer 10-Digit Mobile Number:");
-      if (!mobile || mobile.length < 10) {
-        alert("Please enter a valid 10-digit phone number.");
+      document.getElementById('dev-cust-name').value = '';
+      document.getElementById('dev-cust-mobile').value = '';
+      document.getElementById('dev-cust-error').style.display = 'none';
+      document.getElementById('modal-dev-customer').classList.remove('hidden');
+      setTimeout(() => document.getElementById('dev-cust-name').focus(), 200);
+    }
+
+    function confirmDevCustomer() {
+      const name = document.getElementById('dev-cust-name').value.trim();
+      const mobile = document.getElementById('dev-cust-mobile').value.trim();
+      const errorEl = document.getElementById('dev-cust-error');
+      
+      if (!name) {
+        errorEl.innerText = 'Please enter customer name';
+        errorEl.style.display = 'block';
+        document.getElementById('dev-cust-name').style.borderColor = 'var(--red)';
         return;
       }
+      if (!mobile || mobile.length < 10 || !/^\d{10}$/.test(mobile)) {
+        errorEl.innerText = 'Please enter a valid 10-digit mobile number';
+        errorEl.style.display = 'block';
+        document.getElementById('dev-cust-mobile').style.borderColor = 'var(--red)';
+        return;
+      }
+      
+      closeModal('modal-dev-customer');
       appState.khataCustomers.unshift({
         id: `cust_${Date.now()}`,
         name,
@@ -3751,10 +4166,12 @@
           const div = document.createElement('div');
           div.className = '';
           div.style.cssText = 'padding:12px 16px;border:1px solid var(--line);border-radius:10px;display:flex;align-items:center;justify-content:space-between;font-size:13px;margin-bottom:8px;background:#fff';
+          const typeBadge = m.tableType && m.tableType !== 'all' ? `<span style="font-size:10px;padding:2px 6px;border-radius:6px;background:#f3eefa;color:var(--res);font-weight:600">${m.tableType}</span>` : '';
           div.innerHTML = `
-            <div style="display:flex;align-items:center;gap:8px">
+            <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
               <span style="font-weight:700;color:var(--ink)">${m.name}</span>
               <span style="font-size:11px;padding:2px 8px;border-radius:999px;background:#f5ebe0;color:var(--gold-d);font-weight:600">${m.category}</span>
+              ${typeBadge}
               <span style="font-weight:800;color:var(--red)">₹${m.price}</span>
             </div>
             <div style="display:flex;gap:6px">
@@ -3803,6 +4220,7 @@
         document.getElementById('menu-editor-name').value = itemObj.name;
         document.getElementById('menu-editor-price').value = itemObj.price;
         document.getElementById('menu-editor-cat').value = itemObj.category || 'Snacks';
+        document.getElementById('menu-editor-table-type').value = itemObj.tableType || 'all';
         selectMenuEditorType('item');
       }
 
@@ -3841,6 +4259,7 @@
       const name = document.getElementById('menu-editor-name').value.trim();
       const price = parseFloat(document.getElementById('menu-editor-price').value) || 0;
       const cat = document.getElementById('menu-editor-cat')?.value || 'Snacks';
+      const tableType = document.getElementById('menu-editor-table-type')?.value || 'all';
 
       if (!name) return;
 
@@ -3848,7 +4267,7 @@
         if (type === 'rate') {
           appState.hourlyRates.push({ id: `rate_${Date.now()}`, name, rate: price });
         } else {
-          appState.menuItems.push({ id: `item_${Date.now()}`, name, price, category: cat });
+          appState.menuItems.push({ id: `item_${Date.now()}`, name, price, category: cat, tableType: tableType });
         }
         alert(`✅ Added new ${type === 'rate' ? 'Table Rate' : 'Menu Item'}: "${name}" (@ ₹${price})!`);
       } else {
@@ -3864,6 +4283,7 @@
             itemObj.name = name;
             itemObj.price = price;
             itemObj.category = cat;
+            itemObj.tableType = tableType;
           }
         }
         alert(`✅ Updated entry: "${name}" (@ ₹${price})!`);
@@ -3895,17 +4315,64 @@
     }
 
     function addNewTableModal() {
-      const name = prompt("Enter new Table Name (e.g. Pool Table 5, Snooker VIP):");
-      if (!name) return;
-      const type = confirm("Is this a Pool Table? (Click OK for Pool, Cancel for Snooker/Cafe)") ? 'Pool' : 'Snooker';
+      document.getElementById('add-table-name').value = '';
+      document.getElementById('add-table-type').value = 'Pool';
+      document.getElementById('add-table-rate').value = '200';
+      document.getElementById('add-table-error').style.display = 'none';
+      document.getElementById('modal-add-table').classList.remove('hidden');
+      setTimeout(() => document.getElementById('add-table-name').focus(), 200);
+    }
+
+    function onAddTableTypeChange() {
+      const type = document.getElementById('add-table-type').value;
+      const rateSelect = document.getElementById('add-table-rate');
+      rateSelect.innerHTML = '';
+      if (type === 'Pool') {
+        [['200','₹200/hr - Standard'],['350','₹350/hr - VIP']].forEach(([v,l]) => {
+          rateSelect.innerHTML += `<option value="${v}">${l}</option>`;
+        });
+      } else if (type === 'Snooker') {
+        [['450','₹450/hr - Championship'],['600','₹600/hr - VIP']].forEach(([v,l]) => {
+          rateSelect.innerHTML += `<option value="${v}">${l}</option>`;
+        });
+      } else if (type === 'Gaming') {
+        [['180','₹180/hr - PS5 Station'],['250','₹250/hr - Gaming Lounge']].forEach(([v,l]) => {
+          rateSelect.innerHTML += `<option value="${v}">${l}</option>`;
+        });
+      } else if (type === 'Cafe') {
+        [['0','No hourly rate']].forEach(([v,l]) => {
+          rateSelect.innerHTML += `<option value="${v}">${l}</option>`;
+        });
+      } else if (type === 'VIP') {
+        [['500','500/hr - Private Lounge'],['750','₹750/hr - VIP Suite']].forEach(([v,l]) => {
+          rateSelect.innerHTML += `<option value="${v}">${l}</option>`;
+        });
+      }
+    }
+
+    function confirmAddTable() {
+      const name = document.getElementById('add-table-name').value.trim();
+      const type = document.getElementById('add-table-type').value;
+      const rate = parseInt(document.getElementById('add-table-rate').value) || 200;
+      const errorEl = document.getElementById('add-table-error');
+      
+      if (!name) {
+        errorEl.innerText = 'Please enter a table name';
+        errorEl.style.display = 'block';
+        document.getElementById('add-table-name').style.borderColor = 'var(--red)';
+        return;
+      }
+      
+      closeModal('modal-add-table');
       appState.tables.push({
         id: `tbl_${Date.now()}`,
         name,
         type,
         status: 'available',
-        rate: type === 'Pool' ? 200 : 450,
+        rate,
         startTime: null,
-        cart: []
+        cart: [],
+        gameType: ''
       });
       saveState();
       renderTableGrid();
@@ -4568,7 +5035,7 @@
       const planName = names[targetPlan] || `Tier ₹${targetPlan}/mo`;
       const msg = `Hello! I want to upgrade my CueClub POS subscription plan to ${planName} for my shop "${tenant.name}" (Shop ID: ${tenant.id}). Please guide me with the payment and activation process.`;
       const waUrl = `https://wa.me/918369940174?text=${encodeURIComponent(msg)}`;
-      window.open(waUrl, '_blank');
+      window.location.href = waUrl;
     }
 
     function selectCheckoutMethod(method) {
@@ -4612,7 +5079,7 @@
       const tenant = getCurrentTenant();
       const msg = `Hello! I have initiated payment to upgrade my CueClub POS subscription plan to Tier ₹${checkoutTargetPlan}/mo for my shop "${tenant.name}" (Shop ID: ${tenant.id}). Please verify and activate my terminal profile right away.`;
       const waUrl = `https://wa.me/918369940174?text=${encodeURIComponent(msg)}`;
-      window.open(waUrl, '_blank');
+      window.location.href = waUrl;
       closeModal('modal-plan-checkout');
     }
 
@@ -4693,5 +5160,5 @@
       if (modal) modal.classList.add('hidden');
     }
   </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a1c43a3a6a6a99af',t:'MTc4NDIzODY3OA=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script><script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a1fd0dc9ce10a46b',t:'MTc4NDgzNDU0Ng=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a1c43a3a6a6a99af',t:'MTc4NDIzODY3OA=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script><script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a1ff2db4bc704932',t:'MTc4NDg1NjgyNQ=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
