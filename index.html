@@ -774,9 +774,11 @@
         </div>
         <div >
           <!-- Client sees a professional plan overview rather than dev backdoors -->
-          <button onclick="openClientPlanModal()" class="pos-btn">
-            <i data-lucide="layers" ></i>
+          <button onclick="openClientPlanModal()" class="btn btn-ghost" style="margin-right:8px">
             <span>View Subscription Benefits</span>
+          </button>
+          <button onclick="openGameTypesModal()" class="btn btn-primary">
+            <span>⚙️ Manage Game Types</span>
           </button>
         </div>
       </div>
@@ -2304,6 +2306,45 @@
     </div>
   </div>
 
+  
+  <!-- GAME TYPES MANAGEMENT MODAL -->
+  <div id="modal-game-types" class="modal-overlay hidden">
+    <div class="modal-box" style="max-width:700px;max-height:85vh">
+      <div style="text-align:center;margin-bottom:16px">
+        <div style="width:56px;height:56px;border-radius:16px;background:#f3eefa;color:var(--res);display:flex;align-items:center;justify-content:center;font-size:28px;margin:0 auto 12px">🎮</div>
+        <h3 style="margin:0;font-size:18px;font-weight:800">Manage Game Types</h3>
+        <p style="font-size:13px;color:var(--muted);margin:4px 0 0">Customize games available for each table type</p>
+      </div>
+      
+      <!-- Category Tabs -->
+      <div style="display:flex;gap:6px;flex-wrap:wrap;justify-content:center;margin-bottom:16px">
+        <button onclick="switchGameCategory('Pool')" id="gt-tab-Pool" class="btn btn-primary" style="padding:8px 14px">🎱 Pool</button>
+        <button onclick="switchGameCategory('Snooker')" id="gt-tab-Snooker" class="btn btn-ghost" style="padding:8px 14px">🎯 Snooker</button>
+        <button onclick="switchGameCategory('Gaming')" id="gt-tab-Gaming" class="btn btn-ghost" style="padding:8px 14px">🎮 Gaming</button>
+        <button onclick="switchGameCategory('VIP')" id="gt-tab-VIP" class="btn btn-ghost" style="padding:8px 14px">👑 VIP</button>
+        <button onclick="switchGameCategory('Cafe')" id="gt-tab-Cafe" class="btn btn-ghost" style="padding:8px 14px">☕ Cafe</button>
+      </div>
+
+      <!-- Add New Game -->
+      <div style="background:#fdf8f0;border:1px solid var(--line);border-radius:12px;padding:12px;margin-bottom:14px">
+        <h4 style="margin:0 0 10px;font-size:14px;font-weight:700">➕ Add New Game</h4>
+        <div style="display:grid;grid-template-columns:1fr 80px auto;gap:8px">
+          <input type="text" id="new-game-name" placeholder="Game name..." style="padding:10px 12px;border:2px solid var(--line);border-radius:10px;font-size:14px;box-sizing:border-box">
+          <input type="text" id="new-game-icon" placeholder="Icon" maxlength="2" style="padding:10px 12px;border:2px solid var(--line);border-radius:10px;font-size:18px;text-align:center;box-sizing:border-box">
+          <button onclick="addNewGame()" class="btn btn-ok" style="padding:10px 16px">Add</button>
+        </div>
+      </div>
+
+      <!-- Games List -->
+      <div id="game-types-list" style="max-height:300px;overflow-y:auto"></div>
+
+      <div style="display:flex;gap:10px;margin-top:16px">
+        <button onclick="closeModal('modal-game-types')" class="btn btn-ghost" style="flex:1;padding:12px">Close</button>
+        <button onclick="saveGameTypes()" class="btn btn-primary" style="flex:1;padding:12px">💾 Save Changes</button>
+      </div>
+    </div>
+  </div>
+
   <!-- 7. RECEIPT PRINT PREVIEW MODAL -->
   <div id="modal-receipt" class="modal-overlay hidden">
     <div class="modal-box" style="max-width:400px">
@@ -2521,6 +2562,47 @@
         { id: 'cafe_10', name: 'Iced Lemon Tea', price: 90, category: 'Drinks', tableType: 'Cafe' },
         { id: 'cafe_11', name: 'Red Bull Energy Drink', price: 180, category: 'Drinks', tableType: 'Cafe' }
       ],
+      gameTypes: {
+        'Pool': [
+          {name: '8-Ball Pool', icon: '🎱'},
+          {name: '9-Ball Pool', icon: '9️⃣'},
+          {name: 'Straight Pool (14.1)', icon: '🎱'},
+          {name: 'One Pocket', icon: '🕳️'},
+          {name: 'Bank Pool', icon: '💰'},
+          {name: 'Rotation', icon: '🔄'}
+        ],
+        'Snooker': [
+          {name: 'English Snooker', icon: '🇬'},
+          {name: 'American Snooker', icon: '🇺🇸'},
+          {name: 'Six-Red Snooker', icon: '6️⃣'},
+          {name: 'Snooker Plus', icon: ''},
+          {name: 'Power Snooker', icon: '⚡'},
+          {name: 'Practice Frame', icon: '️'}
+        ],
+        'Gaming': [
+          {name: 'FIFA 24', icon: '⚽'},
+          {name: 'GTA V', icon: '🚗'},
+          {name: 'Call of Duty', icon: '🔫'},
+          {name: 'Minecraft', icon: '⛏️'},
+          {name: 'Fortnite', icon: '️'},
+          {name: 'Spider-Man 2', icon: '🕷️'},
+          {name: 'God of War', icon: '⚔️'},
+          {name: 'Other Game', icon: '🎮'}
+        ],
+        'VIP': [
+          {name: 'VIP Pool Match', icon: ''},
+          {name: 'VIP Snooker', icon: '🎯'},
+          {name: 'Private Party', icon: '🎉'},
+          {name: 'Tournament', icon: '🏆'},
+          {name: 'Corporate Event', icon: '💼'},
+          {name: 'Birthday Package', icon: '🎂'}
+        ],
+        'Cafe': [
+          {name: 'Dine-in', icon: '🍽️'},
+          {name: 'Takeaway', icon: '🥡'},
+          {name: 'Delivery', icon: '🚚'}
+        ]
+      },
       tables: [
         { id: 'tbl_1', name: 'Pool Table 1', type: 'Pool', status: 'occupied', rate: 200, startTime: Date.now() - (42 * 60 * 1000), cart: [{ id: 'item_1', name: 'Cold Coffee with Ice Cream', price: 140, qty: 2 }] },
         { id: 'tbl_2', name: 'Pool Table 2', type: 'Pool', status: 'available', rate: 200, startTime: null, cart: [] },
@@ -3178,66 +3260,18 @@
       const container = document.getElementById('game-type-options');
       const typeLabel = document.querySelector('#modal-game-type h3');
       
-      let games = [];
-      let categoryTitle = 'Select Game';
+      const typeIcons = {'Pool': '🎱', 'Snooker': '', 'Gaming': '🎮', 'VIP': '👑', 'Cafe': '☕'};
+      const typeNames = {'Pool': 'Pool Game', 'Snooker': 'Snooker Game', 'Gaming': 'PS Game', 'VIP': 'VIP Experience', 'Cafe': 'Cafe Order'};
       
-      if (table.type === 'Pool') {
-        categoryTitle = '🎱 Select Pool Game';
-        games = [
-          {name: '8-Ball Pool', icon: '🎱'},
-          {name: '9-Ball Pool', icon: '9️'},
-          {name: 'Straight Pool (14.1)', icon: '🎱'},
-          {name: 'One Pocket', icon: '🕳️'},
-          {name: 'Bank Pool', icon: '💰'},
-          {name: 'Rotation', icon: ''}
-        ];
-      } else if (table.type === 'Snooker') {
-        categoryTitle = '🎯 Select Snooker Game';
-        games = [
-          {name: 'English Snooker', icon: '🇬🇧'},
-          {name: 'American Snooker', icon: '🇺🇸'},
-          {name: 'Six-Red Snooker', icon: '6️⃣'},
-          {name: 'Snooker Plus', icon: '➕'},
-          {name: 'Power Snooker', icon: ''},
-          {name: 'Practice Frame', icon: '🏋️'}
-        ];
-      } else if (table.type === 'Gaming') {
-        categoryTitle = ' Select PS Game';
-        games = [
-          {name: 'FIFA 24', icon: '⚽'},
-          {name: 'GTA V', icon: '🚗'},
-          {name: 'Call of Duty', icon: '🔫'},
-          {name: 'Minecraft', icon: '⛏️'},
-          {name: 'Fortnite', icon: '️'},
-          {name: 'Spider-Man 2', icon: '️'},
-          {name: 'God of War', icon: '⚔️'},
-          {name: 'Other Game', icon: ''}
-        ];
-      } else if (table.type === 'VIP') {
-        categoryTitle = '👑 VIP Experience';
-        games = [
-          {name: 'VIP Pool Match', icon: '🎱'},
-          {name: 'VIP Snooker', icon: ''},
-          {name: 'Private Party', icon: '🎉'},
-          {name: 'Tournament', icon: '🏆'},
-          {name: 'Corporate Event', icon: '💼'},
-          {name: 'Birthday Package', icon: '🎂'}
-        ];
-      } else if (table.type === 'Cafe') {
-        categoryTitle = '☕ Cafe Order';
-        games = [
-          {name: 'Dine-in', icon: '🍽️'},
-          {name: 'Takeaway', icon: '🥡'},
-          {name: 'Delivery', icon: '🚚'}
-        ];
-      }
+      const games = appState.gameTypes[table.type] || [];
+      const categoryTitle = `${typeIcons[table.type] || ''} Select ${typeNames[table.type] || 'Game'}`;
       
       if (typeLabel) typeLabel.innerText = categoryTitle;
       
       const cols = games.length > 4 ? 3 : 2;
       container.style.gridTemplateColumns = `repeat(${cols}, 1fr)`;
       container.innerHTML = games.map(g => `
-        <button onclick="selectGameType('${g.name}')" style="padding:14px;border:2px solid var(--line);border-radius:14px;background:#fff;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:6px;transition:.15s" onmouseover="this.style.borderColor='var(--red)';this.style.background='#fdf8f0'" onmouseout="this.style.borderColor='var(--line)';this.style.background='#fff'">
+        <button onclick="selectGameType('${g.name.replace(/'/g, "\'")}')" style="padding:14px;border:2px solid var(--line);border-radius:14px;background:#fff;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:6px;transition:.15s" onmouseover="this.style.borderColor='var(--red)';this.style.background='#fdf8f0'" onmouseout="this.style.borderColor='var(--line)';this.style.background='#fff'">
           <span style="font-size:28px">${g.icon}</span>
           <span style="font-size:12px;font-weight:700;color:var(--ink)">${g.name}</span>
         </button>
@@ -5155,10 +5189,123 @@
       location.reload();
     }
 
+
+    let currentGameCategory = 'Pool';
+
+    function openGameTypesModal() {
+      currentGameCategory = 'Pool';
+      document.getElementById('modal-game-types').classList.remove('hidden');
+      renderGameTypesList();
+      updateGameCategoryTabs();
+    }
+
+    function switchGameCategory(category) {
+      currentGameCategory = category;
+      updateGameCategoryTabs();
+      renderGameTypesList();
+    }
+
+    function updateGameCategoryTabs() {
+      ['Pool', 'Snooker', 'Gaming', 'VIP', 'Cafe'].forEach(cat => {
+        const btn = document.getElementById(`gt-tab-${cat}`);
+        if (btn) {
+          if (cat === currentGameCategory) {
+            btn.className = 'btn btn-primary';
+            btn.style.padding = '8px 14px';
+          } else {
+            btn.className = 'btn btn-ghost';
+            btn.style.padding = '8px 14px';
+          }
+        }
+      });
+    }
+
+    function renderGameTypesList() {
+      const container = document.getElementById('game-types-list');
+      const games = appState.gameTypes[currentGameCategory] || [];
+      
+      if (games.length === 0) {
+        container.innerHTML = '<div style="text-align:center;padding:20px;color:var(--muted)">No games added yet. Add one above!</div>';
+        return;
+      }
+      
+      container.innerHTML = games.map((g, i) => `
+        <div style="display:flex;align-items:center;gap:10px;padding:10px;border:1px solid var(--line);border-radius:10px;margin-bottom:8px;background:#fff">
+          <input type="text" value="${g.icon}" maxlength="2" onchange="updateGameIcon(${i}, this.value)" style="width:50px;padding:8px;border:2px solid var(--line);border-radius:8px;font-size:20px;text-align:center;box-sizing:border-box">
+          <input type="text" value="${g.name}" onchange="updateGameName(${i}, this.value)" style="flex:1;padding:8px 12px;border:2px solid var(--line);border-radius:8px;font-size:14px;box-sizing:border-box">
+          <button onclick="moveGameUp(${i})" class="btn btn-ghost" style="padding:6px 10px;font-size:16px" title="Move Up">↑</button>
+          <button onclick="moveGameDown(${i})" class="btn btn-ghost" style="padding:6px 10px;font-size:16px" title="Move Down">↓</button>
+          <button onclick="deleteGame(${i})" class="btn btn-danger" style="padding:6px 10px;font-size:12px">️</button>
+        </div>
+      `).join('');
+    }
+
+    function addNewGame() {
+      const nameInput = document.getElementById('new-game-name');
+      const iconInput = document.getElementById('new-game-icon');
+      const name = nameInput.value.trim();
+      const icon = iconInput.value.trim() || '🎮';
+      
+      if (!name) {
+        nameInput.style.borderColor = 'var(--red)';
+        nameInput.focus();
+        return;
+      }
+      
+      if (!appState.gameTypes[currentGameCategory]) {
+        appState.gameTypes[currentGameCategory] = [];
+      }
+      appState.gameTypes[currentGameCategory].push({name, icon});
+      nameInput.value = '';
+      iconInput.value = '';
+      renderGameTypesList();
+    }
+
+    function updateGameName(index, name) {
+      if (appState.gameTypes[currentGameCategory] && appState.gameTypes[currentGameCategory][index]) {
+        appState.gameTypes[currentGameCategory][index].name = name;
+      }
+    }
+
+    function updateGameIcon(index, icon) {
+      if (appState.gameTypes[currentGameCategory] && appState.gameTypes[currentGameCategory][index]) {
+        appState.gameTypes[currentGameCategory][index].icon = icon;
+      }
+    }
+
+    function moveGameUp(index) {
+      const games = appState.gameTypes[currentGameCategory];
+      if (index > 0) {
+        [games[index-1], games[index]] = [games[index], games[index-1]];
+        renderGameTypesList();
+      }
+    }
+
+    function moveGameDown(index) {
+      const games = appState.gameTypes[currentGameCategory];
+      if (index < games.length - 1) {
+        [games[index], games[index+1]] = [games[index+1], games[index]];
+        renderGameTypesList();
+      }
+    }
+
+    function deleteGame(index) {
+      if (confirm('Delete this game?')) {
+        appState.gameTypes[currentGameCategory].splice(index, 1);
+        renderGameTypesList();
+      }
+    }
+
+    function saveGameTypes() {
+      saveState();
+      closeModal('modal-game-types');
+      alert('✅ Game types saved successfully!');
+    }
+
     function closeModal(modalId) {
       const modal = document.getElementById(modalId);
       if (modal) modal.classList.add('hidden');
     }
   </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a1c43a3a6a6a99af',t:'MTc4NDIzODY3OA=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script><script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a1ff2db4bc704932',t:'MTc4NDg1NjgyNQ=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a1c43a3a6a6a99af',t:'MTc4NDIzODY3OA=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script><script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a2004dc78b06c795',t:'MTc4NDg2ODYyNA=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
